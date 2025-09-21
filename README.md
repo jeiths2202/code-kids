@@ -17,26 +17,40 @@
 - Chart.js for 데이터 시각화
 - Font Awesome 아이콘
 
-### 백엔드 (Google Cloud)
-- Scratch GUI (Node.js + Webpack)
-- Google Drive API 연동
-- PM2 프로세스 관리
+### 백엔드 (Vercel 서버리스)
+- Google Drive API 연동 (보안 처리)
+- 환경변수를 통한 API 키 보호
+- 폴더 제한 접근 제어
+
+### 외부 서비스
+- TurboWarp (고성능 Scratch 에디터)
+- Scratch.mit.edu (공식 Scratch 에디터)
+- Google Drive API v3
 
 ## 🏗️ 아키텍처
 
 ```
-학생 브라우저
+학생 브라우저 (모바일/데스크톱)
     ↓
-Vercel Frontend (새로운 배포)
+Vercel Frontend (정적 파일 호스팅)
     ↓
-Google Cloud Server (34.69.106.118:3000)
+Google Drive API (서버리스 함수를 통한 보안 접근)
     ↓
-Google Drive API (폴더 ID: 1rEMeET9wqGR2Ky-fefFm6BumbXsRBi77)
+외부 Scratch GUI (TurboWarp/Scratch.mit.edu)
 ```
+
+### 🔄 프로젝트 로드 플로우
+
+1. **프로젝트 선택**: 학생이 Google Drive 프로젝트 선택
+2. **파일 다운로드**: 브라우저에 .sb3 파일 자동 다운로드
+3. **디바이스별 안내**:
+   - 📱 **모바일**: 단계별 가이드 모달 표시
+   - 🖥️ **데스크톱**: TurboWarp 자동 열기 + 안내
+4. **수동 로드**: 사용자가 Scratch GUI에서 "파일에서 로드" 클릭
 
 ## 🎯 프로젝트 개요
 
-CodeKids는 초등학교 3학년부터 중학교 3학년까지의 학생들을 대상으로 하는 코딩 교육 플랫폼입니다. 메인프레임 시스템의 디지털 트랜스포메이션 경험을 교육 분야에 적용하여, 전통적인 교육 방식을 혁신적인 디지털 학습 경험으로 전환했습니다.
+CodeKids는 초등학교 3학년부터 중학교 3학년까지의 학생들을 대상으로 하는 코딩 교육 플랫폼입니다. Scratch 블록 코딩부터 시작하여 단계적으로 프로그래밍 개념을 익힐 수 있도록 설계된 웹 기반 학습 환경을 제공합니다.
 
 ### 핵심 목표
 - 🎮 **게임형 학습**: 레벨업, 배지, 랭킹 시스템으로 학습 동기 부여
@@ -247,22 +261,47 @@ POST   /api/challenges       # 챌린지 제출
 - 화상 수업 시스템 (WebRTC)
 - 실시간 코드 공유
 
-## 💡 Legacy 시스템 DX화 아키텍처 적용
+## 🛠️ 개발 환경 설정
 
-### 모듈화 설계 원칙
-- **관심사 분리**: HTML(구조), CSS(스타일), JS(동작) 완전 분리
+### 로컬 개발
+```bash
+# 정적 파일 서버 실행
+python -m http.server 8000
+# 또는
+npx live-server
+```
+
+### 환경 변수 설정
+```bash
+# Vercel 환경 변수
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REFRESH_TOKEN=your_refresh_token
+GOOGLE_DRIVE_FOLDER_ID=your_folder_id
+```
+
+### 기술 아키텍처
+- **모듈화 설계**: HTML(구조), CSS(스타일), JS(동작) 분리
 - **컴포넌트 기반**: 재사용 가능한 UI 컴포넌트 설계
-- **스케일링 고려**: 대용량 사용자 처리를 위한 최적화
+- **모바일 최적화**: 반응형 디자인과 터치 인터페이스
 
-### 성능 최적화 전략
+### 성능 최적화
 - **지연 로딩**: 뷰포트 진입 시 콘텐츠 로드
 - **이미지 최적화**: WebP 포맷, 반응형 이미지
-- **번들 최적화**: 코드 스플리팅, 트리 쉐이킹
+- **모바일 친화**: 터치 제스처와 모바일 다운로드 지원
 
-### 확장성 설계
-- **API 우선**: RESTful API 기반 서비스 분리
-- **마이크로서비스**: 독립적인 서비스 모듈 구성
-- **클라우드 네이티브**: 컨테이너 기반 배포 준비
+## 🚀 배포
+
+### Vercel 배포
+1. GitHub 저장소와 Vercel 연결
+2. 환경 변수 설정 (Google Drive API)
+3. 자동 배포 활성화
+
+### 주요 기능 테스트
+- ✅ Google Drive 프로젝트 로드
+- ✅ 모바일/데스크톱 파일 다운로드
+- ✅ 외부 Scratch GUI 연동
+- ✅ 반응형 UI 동작
 
 ## 📊 예상 비즈니스 모델
 

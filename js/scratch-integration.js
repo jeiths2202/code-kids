@@ -682,25 +682,26 @@ class CodeKidsScratchEditor {
         }
     }
 
-    // Google Cloud Run GUI 연결 시도
+    // 외부 Scratch GUI 사용
     tryCloudRunGUI() {
-        const cloudScratchURL = 'http://34.69.106.118:3000';
-        const fallbackScratchURL = 'https://scratch-gui.vercel.app/';
+        // 더 이상 자체 호스팅 서버 불필요
+        console.log('🎯 외부 Scratch GUI 서비스 사용으로 변경');
 
-        fetch(cloudScratchURL)
-            .then(response => {
-                if (response.ok) {
-                    console.log('✅ Google Cloud Run Scratch GUI 연결 성공!');
-                    this.enableScratchGUI(cloudScratchURL);
-                } else {
-                    console.warn('⚠️ Cloud Run 실패, 폴백 GUI 사용');
-                    this.enableScratchGUI(fallbackScratchURL);
-                }
-            })
-            .catch(error => {
-                console.warn('❌ Cloud Run 연결 실패, 폴백 GUI 사용:', error.message);
-                this.enableScratchGUI(fallbackScratchURL);
-            });
+        // 외부 Scratch GUI 직접 사용 (연결 테스트 불필요)
+        const externalScratchURLs = [
+            'https://scratch.mit.edu/projects/editor/',           // 공식 MIT Scratch
+            'https://turbowarp.org/editor',                      // TurboWarp (고성능)
+            'https://sheeptester.github.io/scratch-gui/',        // GitHub Pages 호스팅
+            'https://scratch-gui.vercel.app/'                    // Vercel 호스팅
+        ];
+
+        // TurboWarp 사용 (빠르고 안정적, 호환성 좋음)
+        const primaryScratchURL = externalScratchURLs[1];
+
+        console.log('🌐 외부 Scratch GUI 사용:', primaryScratchURL);
+        console.log('💡 Google Drive 프로젝트는 파일 다운로드 → Scratch GUI 로드 방식으로 연동');
+
+        this.enableScratchGUI(primaryScratchURL);
     }
     
     enableScratchGUI(scratchURL) {

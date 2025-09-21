@@ -607,47 +607,8 @@ class CloudProjectManager {
                 });
             }
 
-            // Scratch 에디터에 프로젝트 로드
-            if (window.codekidsEditor) {
-                // 클라우드 프로젝트를 새 프로젝트로 로드
-                window.codekidsEditor.currentProject = {
-                    id: null, // 새 프로젝트
-                    title: `${project.title} (클라우드)`,
-                    technology: 'Scratch',
-                    status: '진행중',
-                    cloud_source: project.id,
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
-                };
-
-                window.codekidsEditor.unsavedChanges = true;
-                window.codekidsEditor.updateUI();
-
-                console.log(`파일 로드 성공: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
-
-                // Scratch GUI가 연결되어 있는지 확인
-                const iframe = document.getElementById('scratch-iframe');
-                if (iframe && iframe.src && iframe.src.includes('localhost:8601')) {
-                    // URL 방식으로 프로젝트 로드 시도
-                    const fullProjectURL = `${window.location.origin}${project.filePath}`;
-                    console.log('프로젝트 URL 전달:', fullProjectURL);
-                    window.codekidsEditor.waitForScratchGUIAndLoadFile(file, fullProjectURL);
-                } else {
-                    // Scratch GUI가 없을 때는 파일 다운로드 제공
-                    this.offerDirectDownload(file, project);
-                }
-
-                // 성공 메시지
-                if (window.codekidsEditor.api) {
-                    window.codekidsEditor.api.showNotification(
-                        `클라우드 프로젝트 "${project.title}"을 불러왔습니다! 🌟`,
-                        'success'
-                    );
-                }
-            }
-
-            // 모달 닫기
-            this.closeModal();
+            // 모바일/데스크톱 모두 지원하는 방식으로 프로젝트 로드
+            this.handleProjectLoad(file, project);
 
         } catch (error) {
             console.error('프로젝트 로드 실패:', error);
@@ -725,9 +686,189 @@ class CloudProjectManager {
             );
         }
     }
+
+    // 모바일/데스크톱 모두 지원하는 프로젝트 로드 처리
+    async handleProjectLoad(file, project) {
+        console.log('📱 모바일 친화적 프로젝트 로드 시작:', project.title);
+
+        // 디바이스 타입 감지
+        const isMobile = this.isMobileDevice();
+        const fileName = `${project.title}.sb3`;
+
+        try {
+            if (isMobile) {
+                // 모바일: 다운로드 + 안내 방식
+                await this.handleMobileProjectLoad(file, project, fileName);
+            } else {
+                // 데스크톱: 다운로드 + 자동 Scratch GUI 열기
+                await this.handleDesktopProjectLoad(file, project, fileName);
+            }
+
+            // 성공 메시지
+            this.showNotification(`${project.title} 준비 완료! 🎉`, 'success');
+
+        } catch (error) {
+            console.error('❌ 프로젝트 로드 처리 실패:', error);
+            this.showNotification('프로젝트 로드에 실패했습니다. 다시 시도해주세요.', 'error');
+        }
+
+        // 모달 닫기
+        this.closeModal();
+    }
+
+    // 모바일 디바이스 감지
+    isMobileDevice() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const mobileKeywords = ['android', 'iphone', 'ipad', 'ipod', 'blackberry', 'windows phone'];
+
+        return mobileKeywords.some(keyword => userAgent.includes(keyword)) ||
+               ('ontouchstart' in window) ||
+               (navigator.maxTouchPoints > 0) ||
+               window.innerWidth < 768;
+    }
+
+    // 모바일용 프로젝트 로드 처리
+    async handleMobileProjectLoad(file, project, fileName) {
+        console.log('📱 모바일 디바이스 감지 - 모바일 친화적 처리');
+
+        // 1. 파일 다운로드
+        this.downloadFile(file, fileName);
+
+        // 2. 단계별 안내 메시지 표시
+        setTimeout(() => {
+            this.showMobileGuide(project);
+        }, 1000);
+    }
+
+    // 데스크톱용 프로젝트 로드 처리
+    async handleDesktopProjectLoad(file, project, fileName) {
+        console.log('🖥️ 데스크톱 디바이스 - 자동화된 처리');
+
+        // 1. 파일 다운로드
+        this.downloadFile(file, fileName);
+
+        // 2. Scratch GUI 자동 열기
+        setTimeout(() => {
+            const scratchURL = 'https://turbowarp.org/editor';
+            window.open(scratchURL, '_blank');
+
+            // 안내 메시지
+            this.showNotification('💡 TurboWarp가 열렸습니다. "파일" → "컴퓨터에서 로드"를 클릭하여 다운로드된 파일을 선택하세요!', 'info');
+        }, 1500);
+    }
+
+    // 모바일용 단계별 안내 표시
+    showMobileGuide(project) {
+        const guideHTML = `
+            <div class="mobile-guide-overlay" style="
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.8); z-index: 10000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 20px; box-sizing: border-box;
+            ">
+                <div class="mobile-guide-content" style="
+                    background: white; border-radius: 12px; padding: 24px;
+                    max-width: 400px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    font-family: 'Noto Sans KR', sans-serif;
+                ">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3 style="color: #4F46E5; margin: 0 0 8px 0; font-size: 18px;">
+                            📱 모바일 가이드
+                        </h3>
+                        <p style="color: #666; margin: 0; font-size: 14px;">
+                            ${project.title} 프로젝트 열기
+                        </p>
+                    </div>
+
+                    <div style="text-align: left; margin-bottom: 24px;">
+                        <div style="margin-bottom: 16px; padding: 12px; background: #F3F4F6; border-radius: 8px;">
+                            <div style="font-weight: bold; color: #1F2937; margin-bottom: 4px;">
+                                1️⃣ 파일 다운로드 확인
+                            </div>
+                            <div style="font-size: 13px; color: #6B7280;">
+                                브라우저 다운로드 폴더에 "${project.title}.sb3" 파일이 저장되었습니다.
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 16px; padding: 12px; background: #F3F4F6; border-radius: 8px;">
+                            <div style="font-weight: bold; color: #1F2937; margin-bottom: 4px;">
+                                2️⃣ Scratch 앱 열기
+                            </div>
+                            <div style="font-size: 13px; color: #6B7280;">
+                                TurboWarp나 Scratch 앱을 설치하거나 웹에서 접속하세요.
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 16px; padding: 12px; background: #F3F4F6; border-radius: 8px;">
+                            <div style="font-weight: bold; color: #1F2937; margin-bottom: 4px;">
+                                3️⃣ 프로젝트 불러오기
+                            </div>
+                            <div style="font-size: 13px; color: #6B7280;">
+                                "파일에서 로드" 또는 "파일 열기"를 선택하여 다운로드된 파일을 선택하세요.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button onclick="window.open('https://turbowarp.org/editor', '_blank')" style="
+                            flex: 1; background: #4F46E5; color: white; border: none;
+                            padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer;
+                        ">
+                            TurboWarp 열기
+                        </button>
+                        <button onclick="this.closest('.mobile-guide-overlay').remove()" style="
+                            flex: 1; background: #E5E7EB; color: #374151; border: none;
+                            padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer;
+                        ">
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', guideHTML);
+
+        // 10초 후 자동 닫기
+        setTimeout(() => {
+            const overlay = document.querySelector('.mobile-guide-overlay');
+            if (overlay) overlay.remove();
+        }, 10000);
+    }
+
+    // 파일 다운로드 함수 (모바일 최적화)
+    downloadFile(file, fileName) {
+        console.log('💾 파일 다운로드 시작:', fileName);
+
+        try {
+            const url = URL.createObjectURL(file);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.style.display = 'none';
+
+            // 모바일에서 더 안정적인 다운로드를 위해
+            a.setAttribute('target', '_blank');
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // URL 정리
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+
+            console.log('✅ 파일 다운로드 완료:', fileName);
+
+        } catch (error) {
+            console.error('❌ 파일 다운로드 실패:', error);
+            throw error;
+        }
+    }
 }
 
 // 전역 인스턴스 생성
 window.cloudProjectsManager = new CloudProjectManager();
 
-console.log('Cloud Projects Manager 초기화 완료! ☁️');
+console.log('Cloud Projects Manager 초기화 완료! ☁️📱');
