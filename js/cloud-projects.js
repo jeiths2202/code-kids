@@ -303,40 +303,38 @@ class CloudProjectManager {
         }
     }
 
-    // Google Drive 연결 처리 (학생 모드와 선생님 모드 통합)
+    // Google Drive 연결 처리 (Secure API 사용)
     async connectGoogleDrive() {
         try {
             console.log('🔐 Google Drive 연결 시도...');
 
-            // 새로운 Public API 사용
-            if (window.googleDrivePublicAPI) {
-                const api = window.googleDrivePublicAPI;
+            // Google Drive Secure API 사용 (서버리스 함수 기반)
+            if (window.googleDriveSecureAPI) {
+                console.log('✅ Google Drive Secure API 사용');
 
-                // 이미 토큰이 있는지 확인
-                if (api.isPublicAccessReady()) {
-                    console.log('✅ 기존 토큰으로 접근');
-                    await api.loadGoogleDriveProjects();
-                    this.showNotification('Google Drive 프로젝트를 불러왔습니다! 🎉', 'success');
-                } else {
-                    console.log('🔑 선생님 인증 필요');
-                    const success = await api.authenticateTeacher();
-
-                    if (success) {
-                        console.log('✅ 인증 성공');
-                        this.showNotification('Google Drive가 연결되었습니다! 🎉', 'success');
-                    } else {
-                        throw new Error('인증에 실패했습니다');
-                    }
+                // 이미 프로젝트가 로드되어 있는지 확인
+                if (this.googleDriveProjects && this.googleDriveProjects.length > 0) {
+                    console.log('✅ 이미 로드된 프로젝트 사용');
+                    this.showNotification('Google Drive 프로젝트가 이미 로드되어 있습니다! 🎉', 'success');
+                    return;
                 }
 
-                // 프로젝트 목록 업데이트
-                this.googleDriveProjects = api.projects || [];
-                this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
-                this.filterProjects();
-                this.renderProjects();
+                // 새로 프로젝트 로드
+                const projects = await window.googleDriveSecureAPI.loadProjects();
+
+                if (projects && projects.length > 0) {
+                    this.googleDriveProjects = projects;
+                    this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+                    this.filterProjects();
+                    this.renderProjects();
+                    this.showNotification(`Google Drive에서 ${projects.length}개의 프로젝트를 불러왔습니다! 🎉`, 'success');
+                } else {
+                    this.showNotification('Google Drive에서 프로젝트를 찾을 수 없습니다.', 'info');
+                }
 
             } else if (window.googleDriveAPI) {
                 // 기존 API 폴백
+                console.log('🔄 기존 Google Drive API 사용');
                 const success = await window.googleDriveAPI.signIn();
 
                 if (success) {
