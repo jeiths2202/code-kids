@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파이썬 입문 - CodeKids</title>
+
+    <!-- 외부 라이브러리 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 커스텀 스타일 -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#06B6D4',
+                        accent: '#F59E0B',
+                        success: '#10B981'
+                    },
+                    fontFamily: {
+                        'korean': ['Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-korean bg-gray-100 min-h-screen">
+    <!-- CodeKids 헤더 -->
+    <header id="codekids-header" class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- 로고 -->
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">CodeKids</h1>
+                    </a>
+
+                    <!-- 과정 타이틀 -->
+                    <div class="hidden md:flex items-center">
+                        <div class="w-px h-6 bg-gray-300 mx-4"></div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-code text-purple-500"></i>
+                            <span class="text-lg font-semibold text-gray-700">파이썬 입문</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 사용자 메뉴 -->
+                <div class="flex items-center space-x-3">
+                    <!-- 로그인 버튼 (로그인 전) -->
+                    <div class="login-btn">
+                        <button onclick="googleAuth.signIn()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>로그인</span>
+                        </button>
+                    </div>
+
+                    <!-- 사용자 메뉴 (로그인 후) -->
+                    <div class="user-menu" style="display: none;">
+                        <!-- 로그인 후 사용자 정보가 여기에 표시됩니다 -->
+                    </div>
+
+                    <a href="index.html" class="hidden md:flex items-center px-3 py-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        <span>홈</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 과정 소개 섹션 -->
+    <section class="bg-gradient-to-r from-purple-400 to-pink-500 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <i class="fas fa-code text-6xl mb-6"></i>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">파이썬 입문 과정</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    텍스트 코딩의 첫걸음, 파이썬으로 프로그래밍 기초를 배워요
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm">
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full">
+                        <i class="fas fa-clock mr-2"></i>16주 과정
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full">
+                        <i class="fas fa-users mr-2"></i>중학교 1학년 이상
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full">
+                        <i class="fas fa-star mr-2"></i>중급 레벨
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 과정 진행률 -->
+    <section class="bg-white py-8 border-b">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">진행률</h3>
+                    <span class="text-purple-600 font-semibold">2/16 레슨 완료</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-gradient-to-r from-purple-400 to-pink-500 h-3 rounded-full" style="width: 12.5%"></div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">파이썬의 기초를 차근차근 배워보세요! 🐍</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <!-- 사이드바 - 레슨 목록 -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-list mr-2"></i>레슨 목록
+                        </h3>
+
+                        <div class="space-y-2">
+                            <!-- 1주차 -->
+                            <div class="lesson-week">
+                                <h4 class="font-semibold text-gray-700 mb-2 text-sm">1주차: 파이썬 시작하기</h4>
+                                <div class="lesson-item completed cursor-pointer p-3 bg-green-50 border border-green-200 rounded-lg" onclick="loadLesson(1)">
+                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                    <span class="text-sm">파이썬 소개</span>
+                                </div>
+                            </div>
+
+                            <!-- 2주차 -->
+                            <div class="lesson-week mt-4">
+                                <h4 class="font-semibold text-gray-700 mb-2 text-sm">2주차: 기본 문법</h4>
+                                <div class="lesson-item completed cursor-pointer p-3 bg-green-50 border border-green-200 rounded-lg mb-2" onclick="loadLesson(2)">
+                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                    <span class="text-sm">변수와 자료형</span>
+                                </div>
+                                <div class="lesson-item current cursor-pointer p-3 bg-purple-50 border border-purple-200 rounded-lg" onclick="loadLesson(3)">
+                                    <i class="fas fa-play-circle text-purple-600 mr-2"></i>
+                                    <span class="text-sm">연산자</span>
+                                </div>
+                            </div>
+
+                            <!-- 3주차 -->
+                            <div class="lesson-week mt-4">
+                                <h4 class="font-semibold text-gray-700 mb-2 text-sm">3주차: 제어문</h4>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg mb-2">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">조건문 (if)</span>
+                                </div>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">반복문 (for, while)</span>
+                                </div>
+                            </div>
+
+                            <!-- 4주차 -->
+                            <div class="lesson-week mt-4">
+                                <h4 class="font-semibold text-gray-700 mb-2 text-sm">4주차: 함수</h4>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg mb-2">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">함수 정의</span>
+                                </div>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">매개변수와 반환값</span>
+                                </div>
+                            </div>
+
+                            <!-- 5주차 -->
+                            <div class="lesson-week mt-4">
+                                <h4 class="font-semibold text-gray-700 mb-2 text-sm">5주차: 자료구조</h4>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg mb-2">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">리스트</span>
+                                </div>
+                                <div class="lesson-item locked cursor-not-allowed p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                    <span class="text-sm text-gray-500">딕셔너리</span>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-6">
+                                <p class="text-xs text-gray-500">총 16주 과정</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 메인 컨텐츠 영역 -->
+                <div class="lg:col-span-3">
+                    <!-- 현재 레슨 -->
+                    <div id="lesson-content" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <!-- 레슨 헤더 -->
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h2 class="text-2xl font-bold mb-2">레슨 3: 연산자</h2>
+                                    <p class="opacity-90">파이썬의 다양한 연산자를 배워보세요!</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm opacity-80">2주차</div>
+                                    <div class="text-lg font-semibold">25분</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 레슨 비디오 -->
+                        <div class="p-6">
+                            <div class="aspect-video bg-gray-900 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <i class="fas fa-play-circle text-6xl mb-4 opacity-60"></i>
+                                    <h3 class="text-xl font-semibold mb-2">레슨 영상</h3>
+                                    <p class="text-gray-300">곧 업데이트 예정입니다</p>
+                                </div>
+                            </div>
+
+                            <!-- 레슨 설명 -->
+                            <div class="prose max-w-none mb-8">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">이번 레슨에서 배울 내용</h3>
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                    <li>산술 연산자 (+, -, *, /, %)</li>
+                                    <li>비교 연산자 (==, !=, <, >, <=, >=)</li>
+                                    <li>논리 연산자 (and, or, not)</li>
+                                    <li>대입 연산자 (=, +=, -=, *=, /=)</li>
+                                </ul>
+                            </div>
+
+                            <!-- 코드 실습 섹션 -->
+                            <div class="bg-purple-50 rounded-xl p-6 mb-8">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                    <i class="fas fa-code mr-2 text-purple-600"></i>코드 실습
+                                </h3>
+                                <p class="text-gray-700 mb-4">
+                                    파이썬 코드를 직접 작성하고 실행해보세요!
+                                </p>
+
+                                <!-- 코드 에디터 -->
+                                <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex space-x-2">
+                                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                        </div>
+                                        <span class="text-gray-400 text-sm">main.py</span>
+                                    </div>
+                                    <textarea id="code-editor" class="w-full bg-transparent text-green-400 font-mono text-sm resize-none border-none outline-none" rows="8" placeholder="# 여기에 파이썬 코드를 작성하세요
+# 예시: 연산자 사용하기
+a = 10
+b = 3
+
+print('덧셈:', a + b)
+print('나눗셈:', a / b)
+print('나머지:', a % b)"></textarea>
+                                </div>
+
+                                <div class="flex flex-wrap gap-3">
+                                    <button onclick="runCode()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                                        <i class="fas fa-play mr-2"></i>
+                                        코드 실행
+                                    </button>
+                                    <button onclick="resetCode()" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                        <i class="fas fa-undo mr-2"></i>
+                                        초기화
+                                    </button>
+                                    <button onclick="loadExample()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                                        <i class="fas fa-lightbulb mr-2"></i>
+                                        예제 불러오기
+                                    </button>
+                                </div>
+
+                                <!-- 출력 결과 -->
+                                <div class="mt-4">
+                                    <h4 class="font-semibold text-gray-800 mb-2">출력 결과:</h4>
+                                    <div id="output" class="bg-black text-green-400 font-mono text-sm p-4 rounded-lg min-h-[100px]">
+                                        <span class="text-gray-500">코드를 실행하면 결과가 여기에 표시됩니다...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 퀴즈 섹션 -->
+                            <div class="bg-green-50 rounded-xl p-6 mb-8">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                    <i class="fas fa-question-circle mr-2 text-green-600"></i>퀴즈
+                                </h3>
+                                <div id="quiz-container">
+                                    <div class="quiz-question mb-4">
+                                        <p class="text-gray-700 mb-3">다음 중 파이썬에서 나머지를 구하는 연산자는?</p>
+                                        <div class="space-y-2">
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="radio" name="quiz1" value="/" class="mr-3">
+                                                <span>/</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="radio" name="quiz1" value="%" class="mr-3">
+                                                <span>%</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="radio" name="quiz1" value="*" class="mr-3">
+                                                <span>*</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="radio" name="quiz1" value="//" class="mr-3">
+                                                <span>//</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button onclick="checkQuiz()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                                        정답 확인
+                                    </button>
+                                    <div id="quiz-result" class="mt-3 hidden"></div>
+                                </div>
+                            </div>
+
+                            <!-- 레슨 네비게이션 -->
+                            <div class="flex justify-between items-center pt-6 border-t">
+                                <button onclick="loadLesson(2)" class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fas fa-chevron-left mr-2"></i>
+                                    이전 레슨
+                                </button>
+
+                                <button onclick="completeLesson(3)" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                                    <i class="fas fa-check mr-2"></i>
+                                    레슨 완료
+                                </button>
+
+                                <button onclick="loadLesson(4)" class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                                    다음 레슨
+                                    <i class="fas fa-chevron-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 추가 자료 -->
+                    <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-book mr-2"></i>추가 학습 자료
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <h4 class="font-semibold text-gray-800 mb-2">파이썬 공식 문서</h4>
+                                <p class="text-sm text-gray-600">연산자에 대한 자세한 설명</p>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <h4 class="font-semibold text-gray-800 mb-2">실습 문제 모음</h4>
+                                <p class="text-sm text-gray-600">다양한 연산자 실습 문제들</p>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <h4 class="font-semibold text-gray-800 mb-2">온라인 파이썬 실행기</h4>
+                                <p class="text-sm text-gray-600">브라우저에서 바로 파이썬 실행</p>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <h4 class="font-semibold text-gray-800 mb-2">파이썬 치트시트</h4>
+                                <p class="text-sm text-gray-600">연산자 요약 정리표</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
+    <script>
+        // 레슨 데이터
+        const lessons = {
+            1: {
+                title: "파이썬 소개",
+                week: "1주차",
+                duration: "30분",
+                description: "파이썬이 무엇인지, 왜 배워야 하는지 알아보세요!",
+                videoId: null,
+                content: [
+                    "파이썬이란 무엇인가요?",
+                    "파이썬의 특징과 장점",
+                    "파이썬 설치하기",
+                    "첫 번째 파이썬 프로그램 작성하기"
+                ]
+            },
+            2: {
+                title: "변수와 자료형",
+                week: "2주차",
+                duration: "35분",
+                description: "파이썬의 변수와 다양한 자료형을 배워보세요!",
+                videoId: null,
+                content: [
+                    "변수란 무엇인가요?",
+                    "숫자형 (int, float)",
+                    "문자열 (string)",
+                    "불린형 (boolean)"
+                ]
+            },
+            3: {
+                title: "연산자",
+                week: "2주차",
+                duration: "25분",
+                description: "파이썬의 다양한 연산자를 배워보세요!",
+                videoId: null,
+                content: [
+                    "산술 연산자 (+, -, *, /, %)",
+                    "비교 연산자 (==, !=, <, >, <=, >=)",
+                    "논리 연산자 (and, or, not)",
+                    "대입 연산자 (=, +=, -=, *=, /=)"
+                ]
+            }
+        };
+
+        // 레슨 로드 함수
+        function loadLesson(lessonId) {
+            const lesson = lessons[lessonId];
+            if (!lesson) return;
+
+            // 현재 레슨 업데이트
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('current');
+            });
+
+            // 레슨 컨텐츠 업데이트
+            const lessonContent = document.getElementById('lesson-content');
+            lessonContent.innerHTML = `
+                <!-- 레슨 헤더 -->
+                <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2">레슨 ${lessonId}: ${lesson.title}</h2>
+                            <p class="opacity-90">${lesson.description}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm opacity-80">${lesson.week}</div>
+                            <div class="text-lg font-semibold">${lesson.duration}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 레슨 비디오 -->
+                <div class="p-6">
+                    <div class="aspect-video bg-gray-900 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <i class="fas fa-play-circle text-6xl mb-4 opacity-60"></i>
+                            <h3 class="text-xl font-semibold mb-2">레슨 영상</h3>
+                            <p class="text-gray-300">곧 업데이트 예정입니다</p>
+                        </div>
+                    </div>
+
+                    <!-- 레슨 설명 -->
+                    <div class="prose max-w-none mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">이번 레슨에서 배울 내용</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            ${lesson.content.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- 코드 실습 섹션 (레슨 3 이상에서만 표시) -->
+                    ${lessonId >= 3 ? `
+                    <div class="bg-purple-50 rounded-xl p-6 mb-8">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-code mr-2 text-purple-600"></i>코드 실습
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            파이썬 코드를 직접 작성하고 실행해보세요!
+                        </p>
+                        <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex space-x-2">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                </div>
+                                <span class="text-gray-400 text-sm">main.py</span>
+                            </div>
+                            <textarea id="code-editor" class="w-full bg-transparent text-green-400 font-mono text-sm resize-none border-none outline-none" rows="8" placeholder="# 여기에 파이썬 코드를 작성하세요"></textarea>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="runCode()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                                <i class="fas fa-play mr-2"></i>코드 실행
+                            </button>
+                            <button onclick="resetCode()" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-undo mr-2"></i>초기화
+                            </button>
+                            <button onclick="loadExample()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-lightbulb mr-2"></i>예제 불러오기
+                            </button>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">출력 결과:</h4>
+                            <div id="output" class="bg-black text-green-400 font-mono text-sm p-4 rounded-lg min-h-[100px]">
+                                <span class="text-gray-500">코드를 실행하면 결과가 여기에 표시됩니다...</span>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- 레슨 네비게이션 -->
+                    <div class="flex justify-between items-center pt-6 border-t">
+                        <button onclick="loadLesson(${lessonId - 1})" class="flex items-center text-gray-600 hover:text-primary transition-colors ${lessonId <= 1 ? 'invisible' : ''}">
+                            <i class="fas fa-chevron-left mr-2"></i>
+                            이전 레슨
+                        </button>
+
+                        <button onclick="completeLesson(${lessonId})" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                            <i class="fas fa-check mr-2"></i>
+                            레슨 완료
+                        </button>
+
+                        <button onclick="loadLesson(${lessonId + 1})" class="flex items-center text-gray-600 hover:text-primary transition-colors ${lessonId >= 3 ? 'invisible' : ''}">
+                            다음 레슨
+                            <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 코드 실행 함수 (시뮬레이션)
+        function runCode() {
+            const code = document.getElementById('code-editor').value;
+            const output = document.getElementById('output');
+
+            if (!code.trim()) {
+                output.innerHTML = '<span class="text-red-400">코드를 입력해주세요!</span>';
+                return;
+            }
+
+            // 간단한 파이썬 코드 시뮬레이션
+            try {
+                // 실제로는 서버에서 파이썬 코드를 실행해야 함
+                // 여기서는 간단한 시뮬레이션만 구현
+                let result = '';
+
+                // print 문 감지
+                const printMatches = code.match(/print\s*\(['"](.+)['"]\)/g);
+                if (printMatches) {
+                    printMatches.forEach(match => {
+                        const text = match.match(/['"](.+)['"]/)[1];
+                        result += text + '\n';
+                    });
+                }
+
+                // 간단한 계산 시뮬레이션
+                if (code.includes('print(') && code.includes('+')) {
+                    result += '계산 결과가 여기에 표시됩니다\n';
+                }
+
+                if (result) {
+                    output.innerHTML = `<span class="text-green-400">${result}</span>`;
+                } else {
+                    output.innerHTML = '<span class="text-yellow-400">출력할 내용이 없습니다. print() 함수를 사용해보세요!</span>';
+                }
+            } catch (error) {
+                output.innerHTML = `<span class="text-red-400">오류: ${error.message}</span>`;
+            }
+        }
+
+        // 코드 초기화
+        function resetCode() {
+            document.getElementById('code-editor').value = '';
+            document.getElementById('output').innerHTML = '<span class="text-gray-500">코드를 실행하면 결과가 여기에 표시됩니다...</span>';
+        }
+
+        // 예제 불러오기
+        function loadExample() {
+            const examples = [
+                '# 기본 출력\nprint("안녕하세요, 파이썬!")\nprint("CodeKids에 오신 것을 환영합니다!")',
+                '# 변수 사용\nname = "김코딩"\nage = 13\nprint("이름:", name)\nprint("나이:", age)',
+                '# 연산자 사용\na = 10\nb = 3\nprint("덧셈:", a + b)\nprint("나눗셈:", a / b)\nprint("나머지:", a % b)'
+            ];
+
+            const randomExample = examples[Math.floor(Math.random() * examples.length)];
+            document.getElementById('code-editor').value = randomExample;
+        }
+
+        // 퀴즈 확인 함수
+        function checkQuiz() {
+            const selected = document.querySelector('input[name="quiz1"]:checked');
+            const resultDiv = document.getElementById('quiz-result');
+
+            if (!selected) {
+                resultDiv.innerHTML = '<p class="text-yellow-600">답을 선택해주세요!</p>';
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (selected.value === '%') {
+                resultDiv.innerHTML = '<p class="text-green-600">✅ 정답입니다! %는 나머지를 구하는 연산자입니다.</p>';
+            } else {
+                resultDiv.innerHTML = '<p class="text-red-600">❌ 틀렸습니다. %가 나머지를 구하는 연산자입니다.</p>';
+            }
+            resultDiv.classList.remove('hidden');
+        }
+
+        // 레슨 완료 함수
+        function completeLesson(lessonId) {
+            alert(`레슨 ${lessonId}을 완료했습니다! 🎉`);
+            // 실제로는 서버에 진행률 저장
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>박서준의 디지털 아트 갤러리</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!--
+    디지털 아트 갤러리 웹사이트
+    작성자: 박서준 (중학교 2학년)
+    작성일: 2024.12.05
+
+    이 웹사이트는 HTML5와 CSS3를 사용하여 제작된 개인 포트폴리오 사이트입니다.
+    반응형 디자인, CSS 애니메이션, 그리드 레이아웃 등 현대적인 웹 기술을 활용했습니다.
+
+    주요 특징:
+    1. 완전 반응형 디자인 (모바일, 태블릿, 데스크톱 지원)
+    2. CSS Grid와 Flexbox를 활용한 레이아웃
+    3. CSS 애니메이션과 트랜지션 효과
+    4. 시맨틱 HTML 구조
+    5. 접근성 고려 (키보드 네비게이션, 스크린 리더 지원)
+    -->
+
+    <!-- 헤더 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-text">🎨 Digital Art Gallery</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">홈</a></li>
+                    <li><a href="#gallery" class="nav-link">갤러리</a></li>
+                    <li><a href="#about" class="nav-link">소개</a></li>
+                    <li><a href="#contact" class="nav-link">연락처</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger" aria-label="메뉴 토글">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title animate-fade-in">
+                안녕하세요,<br>
+                <span class="gradient-text">박서준의 아트 갤러리</span>입니다
+            </h1>
+            <p class="hero-description animate-slide-up">
+                디지털 아트와 창의적인 디자인의 세계로 여러분을 초대합니다
+            </p>
+            <div class="hero-buttons animate-fade-in-delayed">
+                <a href="#gallery" class="btn btn-primary">작품 보기</a>
+                <a href="#about" class="btn btn-secondary">더 알아보기</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 갤러리 섹션 -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">작품 갤러리</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="digital">디지털 아트</button>
+                <button class="filter-btn" data-filter="illustration">일러스트</button>
+                <button class="filter-btn" data-filter="design">디자인</button>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="digital">
+                    <img src="images/art1.jpg" alt="디지털 아트 1" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>꿈의 풍경</h3>
+                        <p>디지털 페인팅</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="illustration">
+                    <img src="images/art2.jpg" alt="일러스트 1" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>우주 탐험</h3>
+                        <p>벡터 일러스트</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="design">
+                    <img src="images/art3.jpg" alt="디자인 1" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>미래 도시</h3>
+                        <p>컨셉 디자인</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="digital">
+                    <img src="images/art4.jpg" alt="디지털 아트 2" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>신비한 숲</h3>
+                        <p>디지털 페인팅</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="illustration">
+                    <img src="images/art5.jpg" alt="일러스트 2" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>판타지 캐릭터</h3>
+                        <p>캐릭터 일러스트</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="design">
+                    <img src="images/art6.jpg" alt="디자인 2" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>브랜드 아이덴티티</h3>
+                        <p>그래픽 디자인</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <!-- 더 많은 갤러리 아이템들... -->
+                <div class="gallery-item" data-category="digital">
+                    <img src="images/art7.jpg" alt="디지털 아트 3" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>추상적 감정</h3>
+                        <p>추상 디지털 아트</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="illustration">
+                    <img src="images/art8.jpg" alt="일러스트 3" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>동물 친구들</h3>
+                        <p>카툰 일러스트</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="design">
+                    <img src="images/art9.jpg" alt="디자인 3" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>웹사이트 UI</h3>
+                        <p>UI/UX 디자인</p>
+                        <button class="view-btn">자세히 보기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 소개 섹션 -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>안녕하세요, 박서준입니다</h2>
+                    <p>
+                        저는 중학교 2학년 학생이며, 디지털 아트와 웹 디자인에 열정을 가지고 있습니다.
+                        HTML과 CSS를 배우면서 제 작품들을 전시할 수 있는 개인 포트폴리오 사이트를
+                        직접 만들게 되었습니다.
+                    </p>
+                    <p>
+                        CodeKids 플랫폼에서 웹 개발을 배우며, 창의적인 아이디어를 코드로 구현하는
+                        재미를 느꼈습니다. 앞으로도 더 많은 작품을 만들어 여러분과 공유하고 싶습니다.
+                    </p>
+                    <div class="skills">
+                        <h3>기술 스택</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Photoshop</span>
+                            <span class="skill-tag">Illustrator</span>
+                            <span class="skill-tag">Figma</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <span class="avatar-text">🎨</span>
+                        </div>
+                        <h3>박서준</h3>
+                        <p>디지털 아티스트 & 웹 디자이너</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link" aria-label="이메일">📧</a>
+                            <a href="#" class="social-link" aria-label="인스타그램">📷</a>
+                            <a href="#" class="social-link" aria-label="포트폴리오">🎨</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 연락처 섹션 -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">연락하기</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3>이메일</h3>
+                            <p>seojun.park@codekids.kr</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h3>소셜 미디어</h3>
+                            <p>@seojun_art</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🎓</div>
+                        <div class="contact-details">
+                            <h3>학교</h3>
+                            <p>CodeKids 중학교 2학년</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">메시지</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">메시지 보내기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>🎨 Digital Art Gallery</h3>
+                    <p>창의적인 디지털 아트의 세계</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>갤러리</h4>
+                        <ul>
+                            <li><a href="#gallery">디지털 아트</a></li>
+                            <li><a href="#gallery">일러스트</a></li>
+                            <li><a href="#gallery">디자인</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>정보</h4>
+                        <ul>
+                            <li><a href="#about">작가 소개</a></li>
+                            <li><a href="#contact">연락처</a></li>
+                            <li><a href="#">이용약관</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 박서준의 디지털 아트 갤러리. All rights reserved.</p>
+                <p>Made with ❤️ at CodeKids</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 라이트박스 -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="닫기">&times;</button>
+        <img class="lightbox-image" id="lightbox-image" src="" alt="">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <button class="lightbox-prev" onclick="prevImage()" aria-label="이전 이미지">‹</button>
+        <button class="lightbox-next" onclick="nextImage()" aria-label="다음 이미지">›</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!--
+프로젝트 파일 구조:
+├── index.html (이 파일)
+├── styles.css (메인 스타일시트)
+├── animations.css (애니메이션 스타일)
+├── responsive.css (반응형 디자인)
+├── script.js (JavaScript 기능)
+└── images/ (작품 이미지 폴더)
+    ├── art1.jpg ~ art9.jpg
+    └── profile.jpg
+
+학습 목표:
+1. HTML5 시맨틱 태그 활용
+2. CSS3 Grid와 Flexbox 레이아웃
+3. 반응형 웹 디자인 (Mobile First)
+4. CSS 애니메이션과 트랜지션
+5. JavaScript DOM 조작
+6. 웹 접근성 (Accessibility) 고려
+7. 성능 최적화 (이미지 lazy loading 등)
+
+CodeKids 플랫폼에서 이 프로젝트를 통해 실제 웹사이트 제작 과정을
+단계별로 학습할 수 있습니다.
+-->

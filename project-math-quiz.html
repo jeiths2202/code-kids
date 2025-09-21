@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수학 퀴즈 앱 - CodeKids 학생 작품</title>
+
+    <!-- 외부 라이브러리 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 커스텀 스타일 -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#06B6D4',
+                        accent: '#F59E0B',
+                        success: '#10B981'
+                    },
+                    fontFamily: {
+                        'korean': ['Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-korean bg-gray-100 min-h-screen">
+    <!-- CodeKids 헤더 -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- 로고 -->
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">CodeKids</h1>
+                    </a>
+
+                    <!-- 브레드크럼 -->
+                    <div class="hidden md:flex items-center text-gray-600">
+                        <div class="w-px h-6 bg-gray-300 mx-4"></div>
+                        <a href="index.html" class="hover:text-primary">홈</a>
+                        <i class="fas fa-chevron-right mx-2 text-sm"></i>
+                        <a href="index.html#projects" class="hover:text-primary">학생 작품</a>
+                        <i class="fas fa-chevron-right mx-2 text-sm"></i>
+                        <span class="text-gray-800 font-semibold">수학 퀴즈 앱</span>
+                    </div>
+                </div>
+
+                <!-- 네비게이션 -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="hidden md:flex items-center px-3 py-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        <span>홈으로</span>
+                    </a>
+                    <a href="editor.html" class="hidden md:flex items-center px-3 py-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-puzzle-piece mr-2"></i>
+                        <span>코딩 실험실</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 프로젝트 헤더 -->
+        <section class="bg-gradient-to-r from-green-300 to-teal-300 rounded-3xl p-8 md:p-12 text-white mb-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="w-32 h-32 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mb-6 md:mb-0 md:mr-8">
+                    <i class="fas fa-calculator text-6xl"></i>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">수학 퀴즈 앱</h1>
+                    <p class="text-xl mb-4 opacity-90">파이썬으로 만든 재미있는 수학 문제 생성기</p>
+                    <div class="flex flex-wrap justify-center md:justify-start items-center space-x-6 text-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user mr-2"></i>
+                            <span>이지은 (초등학교 6학년)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-heart mr-2"></i>
+                            <span>89 좋아요</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span>2024.12.10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 프로젝트 액션 버튼 -->
+        <section class="flex flex-col sm:flex-row gap-4 mb-8">
+            <button id="play-app-btn" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-play mr-3"></i>
+                앱 실행하기
+            </button>
+            <button id="view-source-btn" class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-code mr-3"></i>
+                소스코드 보기
+            </button>
+            <button id="edit-project-btn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-edit mr-3"></i>
+                편집하기
+            </button>
+        </section>
+
+        <!-- 프로젝트 정보 그리드 -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- 프로젝트 설명 -->
+            <section class="bg-white rounded-2xl p-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">프로젝트 소개</h2>
+                <div class="space-y-4">
+                    <p class="text-gray-600 leading-relaxed">
+                        이 수학 퀴즈 앱은 파이썬을 사용하여 제작된 교육용 수학 문제 생성기입니다.
+                        초등학생들이 재미있게 수학을 학습할 수 있도록 다양한 난이도의 문제를 자동으로 생성합니다.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        앱에는 덧셈, 뺄셈, 곱셈, 나눗셈 등 기본 연산부터 시작하여
+                        점진적으로 어려워지는 문제들이 포함되어 있으며, 학습자의 성취도를 추적하는 기능도 있습니다.
+                    </p>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">주요 기능</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-plus text-green-500 mr-2"></i>
+                            <span class="text-sm">덧셈 문제</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-minus text-blue-500 mr-2"></i>
+                            <span class="text-sm">뺄셈 문제</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-times text-purple-500 mr-2"></i>
+                            <span class="text-sm">곱셈 문제</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-divide text-orange-500 mr-2"></i>
+                            <span class="text-sm">나눗셈 문제</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-chart-line text-red-500 mr-2"></i>
+                            <span class="text-sm">성취도 추적</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                            <span class="text-sm">레벨 시스템</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 기술 정보 -->
+            <section class="bg-white rounded-2xl p-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">기술 정보</h2>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">사용 기술</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Python 3.9</span>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Tkinter GUI</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">Random 모듈</span>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">JSON 데이터</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">학습 개념</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                함수와 모듈
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                GUI 프로그래밍
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                난수 생성과 활용
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                조건문과 반복문
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                파일 입출력
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">프로젝트 통계</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-blue-600">156</div>
+                                <div class="text-sm text-blue-700">코드 라인</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-green-600">12</div>
+                                <div class="text-sm text-green-700">함수</div>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-purple-600">4</div>
+                                <div class="text-sm text-purple-700">난이도</div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-orange-600">8</div>
+                                <div class="text-sm text-orange-700">모듈</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 앱 실행 영역 -->
+        <section id="app-container" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 hidden">
+            <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white p-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold">수학 퀴즈 앱 실행 중</h2>
+                    <button id="close-app-btn" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div id="app-player" class="w-full h-96 bg-gray-100 rounded-lg">
+                    <div id="app-loading" class="text-center flex items-center justify-center h-full">
+                        <div>
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mb-4"></div>
+                            <p class="text-gray-600">수학 퀴즈 앱을 로딩하고 있습니다...</p>
+                        </div>
+                    </div>
+                    <div id="math-quiz-app" class="h-full hidden">
+                        <!-- 실제 수학 퀴즈 앱이 여기에 렌더링됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 소스코드 보기 영역 -->
+        <section id="source-container" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold">파이썬 소스코드</h2>
+                    <button id="close-source-btn" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <div class="flex items-center space-x-4">
+                        <button class="code-tab-btn active bg-blue-100 text-blue-700 px-4 py-2 rounded-lg" data-tab="main">
+                            <i class="fas fa-file-code mr-2"></i>main.py
+                        </button>
+                        <button class="code-tab-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" data-tab="quiz">
+                            <i class="fas fa-question-circle mr-2"></i>quiz_generator.py
+                        </button>
+                        <button class="code-tab-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" data-tab="gui">
+                            <i class="fas fa-desktop mr-2"></i>gui.py
+                        </button>
+                        <button class="code-tab-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" data-tab="data">
+                            <i class="fas fa-database mr-2"></i>data.json
+                        </button>
+                    </div>
+                </div>
+
+                <div id="code-content" class="min-h-96">
+                    <!-- main.py 탭 -->
+                    <div id="main-tab" class="code-tab-content">
+                        <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre><code># main.py - 수학 퀴즈 앱 메인 실행 파일
+import tkinter as tk
+from tkinter import messagebox
+import random
+import json
+from datetime import datetime
+
+class MathQuizApp:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("수학 퀴즈 앱 - CodeKids")
+        self.root.geometry("600x500")
+        self.root.configure(bg="#f0f8ff")
+
+        # 게임 상태 변수
+        self.score = 0
+        self.current_question = None
+        self.difficulty = 1
+        self.question_count = 0
+        self.total_questions = 10
+
+        self.setup_ui()
+        self.load_user_data()
+
+    def setup_ui(self):
+        """UI 구성 요소 설정"""
+        # 제목
+        title_label = tk.Label(
+            self.root,
+            text="🧮 수학 퀴즈 앱",
+            font=("맑은 고딕", 24, "bold"),
+            bg="#f0f8ff",
+            fg="#2c3e50"
+        )
+        title_label.pack(pady=20)
+
+        # 점수 표시
+        self.score_label = tk.Label(
+            self.root,
+            text=f"점수: {self.score}",
+            font=("맑은 고딕", 16),
+            bg="#f0f8ff",
+            fg="#27ae60"
+        )
+        self.score_label.pack()
+
+        # 문제 표시 영역
+        self.question_frame = tk.Frame(self.root, bg="#ffffff", relief="raised", bd=2)
+        self.question_frame.pack(pady=20, padx=40, fill="both", expand=True)
+
+        self.question_label = tk.Label(
+            self.question_frame,
+            text="시작 버튼을 눌러 퀴즈를 시작하세요!",
+            font=("맑은 고딕", 18),
+            bg="#ffffff",
+            fg="#2c3e50",
+            wraplength=400
+        )
+        self.question_label.pack(pady=40)
+
+        # 답안 입력
+        self.answer_entry = tk.Entry(
+            self.root,
+            font=("맑은 고딕", 16),
+            justify="center",
+            width=15
+        )
+        self.answer_entry.pack(pady=10)
+        self.answer_entry.bind("<Return>", self.check_answer)
+
+        # 버튼 프레임
+        button_frame = tk.Frame(self.root, bg="#f0f8ff")
+        button_frame.pack(pady=20)
+
+        # 시작 버튼
+        self.start_btn = tk.Button(
+            button_frame,
+            text="🚀 퀴즈 시작",
+            font=("맑은 고딕", 14, "bold"),
+            bg="#3498db",
+            fg="white",
+            padx=20,
+            pady=10,
+            command=self.start_quiz
+        )
+        self.start_btn.pack(side="left", padx=5)
+
+        # 답안 제출 버튼
+        self.submit_btn = tk.Button(
+            button_frame,
+            text="✓ 답안 제출",
+            font=("맑은 고딕", 14),
+            bg="#27ae60",
+            fg="white",
+            padx=20,
+            pady=10,
+            command=self.check_answer,
+            state="disabled"
+        )
+        self.submit_btn.pack(side="left", padx=5)
+
+        # 다음 문제 버튼
+        self.next_btn = tk.Button(
+            button_frame,
+            text="▶ 다음 문제",
+            font=("맑은 고딕", 14),
+            bg="#e67e22",
+            fg="white",
+            padx=20,
+            pady=10,
+            command=self.next_question,
+            state="disabled"
+        )
+        self.next_btn.pack(side="left", padx=5)
+
+    def start_quiz(self):
+        """퀴즈 시작"""
+        self.score = 0
+        self.question_count = 0
+        self.difficulty = 1
+        self.update_score()
+        self.start_btn.config(state="disabled")
+        self.submit_btn.config(state="normal")
+        self.next_question()
+
+    def generate_question(self):
+        """난이도에 따른 수학 문제 생성"""
+        operations = ['+', '-', '*', '/']
+        operation = random.choice(operations)
+
+        if self.difficulty == 1:
+            # 쉬움: 한 자리 수
+            num1 = random.randint(1, 9)
+            num2 = random.randint(1, 9)
+        elif self.difficulty == 2:
+            # 보통: 두 자리 수
+            num1 = random.randint(10, 99)
+            num2 = random.randint(1, 99)
+        elif self.difficulty == 3:
+            # 어려움: 세 자리 수
+            num1 = random.randint(100, 999)
+            num2 = random.randint(1, 99)
+        else:
+            # 매우 어려움: 큰 수
+            num1 = random.randint(100, 9999)
+            num2 = random.randint(10, 999)
+
+        # 나눗셈의 경우 나머지가 없도록 조정
+        if operation == '/':
+            num1 = num2 * random.randint(1, 20)
+
+        # 뺄셈의 경우 음수가 나오지 않도록 조정
+        if operation == '-' and num1 < num2:
+            num1, num2 = num2, num1
+
+        return num1, num2, operation
+
+    def calculate_answer(self, num1, num2, operation):
+        """정답 계산"""
+        if operation == '+':
+            return num1 + num2
+        elif operation == '-':
+            return num1 - num2
+        elif operation == '*':
+            return num1 * num2
+        elif operation == '/':
+            return num1 // num2
+
+    def next_question(self):
+        """다음 문제 생성 및 표시"""
+        if self.question_count >= self.total_questions:
+            self.end_quiz()
+            return
+
+        self.question_count += 1
+        num1, num2, operation = self.generate_question()
+        self.current_question = {
+            'num1': num1,
+            'num2': num2,
+            'operation': operation,
+            'answer': self.calculate_answer(num1, num2, operation)
+        }
+
+        question_text = f"문제 {self.question_count}/{self.total_questions}\n\n"
+        question_text += f"{num1} {operation} {num2} = ?"
+
+        self.question_label.config(text=question_text)
+        self.answer_entry.delete(0, tk.END)
+        self.answer_entry.focus()
+        self.next_btn.config(state="disabled")
+
+        # 난이도 자동 조정
+        if self.question_count % 3 == 0 and self.difficulty < 4:
+            self.difficulty += 1
+
+    def check_answer(self, event=None):
+        """답안 확인"""
+        try:
+            user_answer = int(self.answer_entry.get())
+            correct_answer = self.current_question['answer']
+
+            if user_answer == correct_answer:
+                self.score += 10 * self.difficulty
+                messagebox.showinfo("정답!", f"🎉 정답입니다!\n+{10 * self.difficulty}점")
+            else:
+                messagebox.showwarning("오답", f"❌ 틀렸습니다.\n정답: {correct_answer}")
+
+            self.update_score()
+            self.next_btn.config(state="normal")
+            self.submit_btn.config(state="disabled")
+
+        except ValueError:
+            messagebox.showerror("입력 오류", "숫자를 입력해주세요!")
+
+    def update_score(self):
+        """점수 업데이트"""
+        self.score_label.config(text=f"점수: {self.score} | 난이도: {self.difficulty}")
+
+    def end_quiz(self):
+        """퀴즈 종료"""
+        final_message = f"퀴즈 완료!\n\n"
+        final_message += f"최종 점수: {self.score}점\n"
+        final_message += f"평균 점수: {self.score/self.total_questions:.1f}점"
+
+        if self.score >= 80:
+            final_message += "\n\n🏆 훌륭합니다!"
+        elif self.score >= 60:
+            final_message += "\n\n👍 잘했어요!"
+        else:
+            final_message += "\n\n💪 더 연습해보세요!"
+
+        messagebox.showinfo("퀴즈 완료", final_message)
+
+        # 게임 초기화
+        self.start_btn.config(state="normal")
+        self.submit_btn.config(state="disabled")
+        self.next_btn.config(state="disabled")
+        self.question_label.config(text="시작 버튼을 눌러 퀴즈를 시작하세요!")
+        self.answer_entry.delete(0, tk.END)
+
+        self.save_user_data()
+
+    def load_user_data(self):
+        """사용자 데이터 로드"""
+        try:
+            with open('user_data.json', 'r', encoding='utf-8') as f:
+                self.user_data = json.load(f)
+        except FileNotFoundError:
+            self.user_data = {
+                'total_games': 0,
+                'best_score': 0,
+                'total_score': 0
+            }
+
+    def save_user_data(self):
+        """사용자 데이터 저장"""
+        self.user_data['total_games'] += 1
+        self.user_data['total_score'] += self.score
+        if self.score > self.user_data['best_score']:
+            self.user_data['best_score'] = self.score
+
+        with open('user_data.json', 'w', encoding='utf-8') as f:
+            json.dump(self.user_data, f, ensure_ascii=False, indent=2)
+
+    def run(self):
+        """앱 실행"""
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = MathQuizApp()
+    app.run()
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- quiz_generator.py 탭 -->
+                    <div id="quiz-tab" class="code-tab-content hidden">
+                        <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre><code># quiz_generator.py - 수학 문제 생성 모듈
+import random
+import json
+
+class QuizGenerator:
+    def __init__(self):
+        self.difficulty_levels = {
+            1: {"min": 1, "max": 9, "name": "쉬움"},
+            2: {"min": 10, "max": 99, "name": "보통"},
+            3: {"min": 100, "max": 999, "name": "어려움"},
+            4: {"min": 1000, "max": 9999, "name": "매우 어려움"}
+        }
+
+    def generate_addition(self, difficulty=1):
+        """덧셈 문제 생성"""
+        level = self.difficulty_levels[difficulty]
+        num1 = random.randint(level["min"], level["max"])
+        num2 = random.randint(level["min"], level["max"])
+
+        return {
+            "question": f"{num1} + {num2}",
+            "answer": num1 + num2,
+            "operation": "addition",
+            "difficulty": difficulty
+        }
+
+    def generate_subtraction(self, difficulty=1):
+        """뺄셈 문제 생성 (음수 결과 방지)"""
+        level = self.difficulty_levels[difficulty]
+        num1 = random.randint(level["min"], level["max"])
+        num2 = random.randint(level["min"], num1)  # num2 <= num1
+
+        return {
+            "question": f"{num1} - {num2}",
+            "answer": num1 - num2,
+            "operation": "subtraction",
+            "difficulty": difficulty
+        }
+
+    def generate_multiplication(self, difficulty=1):
+        """곱셈 문제 생성"""
+        if difficulty == 1:
+            num1 = random.randint(1, 9)
+            num2 = random.randint(1, 9)
+        elif difficulty == 2:
+            num1 = random.randint(1, 12)
+            num2 = random.randint(1, 12)
+        elif difficulty == 3:
+            num1 = random.randint(10, 99)
+            num2 = random.randint(1, 9)
+        else:
+            num1 = random.randint(10, 99)
+            num2 = random.randint(10, 99)
+
+        return {
+            "question": f"{num1} × {num2}",
+            "answer": num1 * num2,
+            "operation": "multiplication",
+            "difficulty": difficulty
+        }
+
+    def generate_division(self, difficulty=1):
+        """나눗셈 문제 생성 (나머지 없음)"""
+        if difficulty == 1:
+            divisor = random.randint(2, 9)
+            quotient = random.randint(1, 9)
+        elif difficulty == 2:
+            divisor = random.randint(2, 12)
+            quotient = random.randint(1, 12)
+        elif difficulty == 3:
+            divisor = random.randint(2, 20)
+            quotient = random.randint(1, 50)
+        else:
+            divisor = random.randint(2, 50)
+            quotient = random.randint(1, 100)
+
+        dividend = divisor * quotient
+
+        return {
+            "question": f"{dividend} ÷ {divisor}",
+            "answer": quotient,
+            "operation": "division",
+            "difficulty": difficulty
+        }
+
+    def generate_mixed_question(self, difficulty=1):
+        """혼합 문제 생성"""
+        operation_type = random.choice([
+            'addition', 'subtraction', 'multiplication', 'division'
+        ])
+
+        if operation_type == 'addition':
+            return self.generate_addition(difficulty)
+        elif operation_type == 'subtraction':
+            return self.generate_subtraction(difficulty)
+        elif operation_type == 'multiplication':
+            return self.generate_multiplication(difficulty)
+        else:
+            return self.generate_division(difficulty)
+
+    def generate_quiz_set(self, num_questions=10, difficulty=1, mixed=True):
+        """퀴즈 세트 생성"""
+        questions = []
+
+        for i in range(num_questions):
+            if mixed:
+                question = self.generate_mixed_question(difficulty)
+            else:
+                # 특정 연산만 선택
+                question = self.generate_addition(difficulty)
+
+            questions.append(question)
+
+        return questions
+
+    def save_quiz_to_file(self, questions, filename="quiz.json"):
+        """퀴즈를 파일로 저장"""
+        quiz_data = {
+            "created_at": str(datetime.now()),
+            "total_questions": len(questions),
+            "questions": questions
+        }
+
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(quiz_data, f, ensure_ascii=False, indent=2)
+
+    def load_quiz_from_file(self, filename="quiz.json"):
+        """파일에서 퀴즈 로드"""
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return None
+
+# 사용 예시
+if __name__ == "__main__":
+    generator = QuizGenerator()
+
+    # 쉬운 덧셈 문제 생성
+    easy_addition = generator.generate_addition(1)
+    print("쉬운 덧셈:", easy_addition)
+
+    # 어려운 혼합 문제 세트 생성
+    hard_quiz = generator.generate_quiz_set(5, 3, True)
+    print("어려운 퀴즈 세트:", hard_quiz)
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- gui.py 탭 -->
+                    <div id="gui-tab" class="code-tab-content hidden">
+                        <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre><code># gui.py - GUI 구성 요소 모듈
+import tkinter as tk
+from tkinter import ttk, messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+class MathQuizGUI:
+    def __init__(self, root):
+        self.root = root
+        self.setup_styles()
+
+    def setup_styles(self):
+        """GUI 스타일 설정"""
+        self.colors = {
+            'primary': '#3498db',
+            'success': '#27ae60',
+            'warning': '#f39c12',
+            'danger': '#e74c3c',
+            'background': '#ecf0f1',
+            'text': '#2c3e50'
+        }
+
+        self.fonts = {
+            'title': ('맑은 고딕', 24, 'bold'),
+            'subtitle': ('맑은 고딕', 16, 'bold'),
+            'body': ('맑은 고딕', 12),
+            'button': ('맑은 고딕', 11, 'bold')
+        }
+
+    def create_title_frame(self, parent, title_text):
+        """제목 프레임 생성"""
+        title_frame = tk.Frame(parent, bg=self.colors['background'])
+        title_frame.pack(fill='x', pady=10)
+
+        title_label = tk.Label(
+            title_frame,
+            text=title_text,
+            font=self.fonts['title'],
+            bg=self.colors['background'],
+            fg=self.colors['text']
+        )
+        title_label.pack()
+
+        return title_frame
+
+    def create_question_frame(self, parent):
+        """문제 표시 프레임 생성"""
+        question_frame = tk.LabelFrame(
+            parent,
+            text="📝 문제",
+            font=self.fonts['subtitle'],
+            bg='white',
+            fg=self.colors['text'],
+            relief='groove',
+            bd=2
+        )
+        question_frame.pack(fill='both', expand=True, padx=20, pady=10)
+
+        # 문제 텍스트 레이블
+        question_label = tk.Label(
+            question_frame,
+            text="문제가 여기에 표시됩니다",
+            font=('맑은 고딕', 18),
+            bg='white',
+            fg=self.colors['text'],
+            wraplength=400,
+            justify='center'
+        )
+        question_label.pack(expand=True, pady=20)
+
+        return question_frame, question_label
+
+    def create_answer_frame(self, parent):
+        """답안 입력 프레임 생성"""
+        answer_frame = tk.Frame(parent, bg=self.colors['background'])
+        answer_frame.pack(pady=10)
+
+        # 답안 입력 레이블
+        answer_label = tk.Label(
+            answer_frame,
+            text="정답을 입력하세요:",
+            font=self.fonts['body'],
+            bg=self.colors['background'],
+            fg=self.colors['text']
+        )
+        answer_label.pack()
+
+        # 답안 입력 필드
+        answer_entry = tk.Entry(
+            answer_frame,
+            font=('맑은 고딕', 16),
+            justify='center',
+            width=15,
+            relief='solid',
+            bd=1
+        )
+        answer_entry.pack(pady=5)
+
+        return answer_frame, answer_entry
+
+    def create_button_frame(self, parent, button_configs):
+        """버튼 프레임 생성"""
+        button_frame = tk.Frame(parent, bg=self.colors['background'])
+        button_frame.pack(pady=15)
+
+        buttons = {}
+
+        for config in button_configs:
+            btn = tk.Button(
+                button_frame,
+                text=config['text'],
+                font=self.fonts['button'],
+                bg=config.get('bg', self.colors['primary']),
+                fg='white',
+                padx=15,
+                pady=8,
+                relief='flat',
+                cursor='hand2',
+                command=config.get('command'),
+                state=config.get('state', 'normal')
+            )
+            btn.pack(side='left', padx=5)
+
+            # 호버 효과
+            self.add_hover_effect(btn, config.get('bg', self.colors['primary']))
+
+            buttons[config['name']] = btn
+
+        return button_frame, buttons
+
+    def add_hover_effect(self, button, original_color):
+        """버튼 호버 효과 추가"""
+        def on_enter(e):
+            button.config(bg=self.darken_color(original_color))
+
+        def on_leave(e):
+            button.config(bg=original_color)
+
+        button.bind("<Enter>", on_enter)
+        button.bind("<Leave>", on_leave)
+
+    def darken_color(self, color):
+        """색상 어둡게 만들기"""
+        color_map = {
+            '#3498db': '#2980b9',
+            '#27ae60': '#229954',
+            '#f39c12': '#e67e22',
+            '#e74c3c': '#c0392b'
+        }
+        return color_map.get(color, color)
+
+    def create_progress_bar(self, parent, maximum=100):
+        """진행률 표시줄 생성"""
+        progress_frame = tk.Frame(parent, bg=self.colors['background'])
+        progress_frame.pack(fill='x', padx=20, pady=5)
+
+        progress_label = tk.Label(
+            progress_frame,
+            text="진행률:",
+            font=self.fonts['body'],
+            bg=self.colors['background'],
+            fg=self.colors['text']
+        )
+        progress_label.pack(side='left')
+
+        progress_bar = ttk.Progressbar(
+            progress_frame,
+            maximum=maximum,
+            style='TProgressbar'
+        )
+        progress_bar.pack(side='left', fill='x', expand=True, padx=(10, 0))
+
+        return progress_frame, progress_bar
+
+    def create_score_frame(self, parent):
+        """점수 표시 프레임 생성"""
+        score_frame = tk.Frame(parent, bg=self.colors['background'])
+        score_frame.pack(fill='x', padx=20, pady=5)
+
+        # 현재 점수
+        current_score_label = tk.Label(
+            score_frame,
+            text="현재 점수: 0",
+            font=self.fonts['subtitle'],
+            bg=self.colors['background'],
+            fg=self.colors['success']
+        )
+        current_score_label.pack(side='left')
+
+        # 최고 점수
+        best_score_label = tk.Label(
+            score_frame,
+            text="최고 점수: 0",
+            font=self.fonts['body'],
+            bg=self.colors['background'],
+            fg=self.colors['text']
+        )
+        best_score_label.pack(side='right')
+
+        return score_frame, current_score_label, best_score_label
+
+    def show_result_dialog(self, is_correct, correct_answer=None, user_answer=None):
+        """결과 다이얼로그 표시"""
+        if is_correct:
+            messagebox.showinfo(
+                "정답! 🎉",
+                "축하합니다! 정답입니다!"
+            )
+        else:
+            messagebox.showwarning(
+                "오답 😅",
+                f"아쉽네요! 틀렸습니다.\n\n"
+                f"입력한 답: {user_answer}\n"
+                f"정답: {correct_answer}"
+            )
+
+    def show_quiz_complete_dialog(self, score, total_questions):
+        """퀴즈 완료 다이얼로그"""
+        percentage = (score / (total_questions * 10)) * 100
+
+        if percentage >= 90:
+            emoji = "🏆"
+            message = "완벽합니다!"
+        elif percentage >= 80:
+            emoji = "🎉"
+            message = "훌륭해요!"
+        elif percentage >= 70:
+            emoji = "👍"
+            message = "잘했어요!"
+        elif percentage >= 60:
+            emoji = "😊"
+            message = "괜찮아요!"
+        else:
+            emoji = "💪"
+            message = "더 연습해봐요!"
+
+        dialog_text = f"{emoji} 퀴즈 완료!\n\n"
+        dialog_text += f"점수: {score}점\n"
+        dialog_text += f"정답률: {percentage:.1f}%\n\n"
+        dialog_text += message
+
+        messagebox.showinfo("퀴즈 완료", dialog_text)
+
+    def create_statistics_window(self, parent, user_data):
+        """통계 창 생성"""
+        stats_window = tk.Toplevel(parent)
+        stats_window.title("학습 통계")
+        stats_window.geometry("500x400")
+        stats_window.configure(bg=self.colors['background'])
+
+        # 통계 제목
+        self.create_title_frame(stats_window, "📊 학습 통계")
+
+        # 통계 정보 프레임
+        stats_frame = tk.LabelFrame(
+            stats_window,
+            text="전체 통계",
+            font=self.fonts['subtitle'],
+            bg='white',
+            fg=self.colors['text']
+        )
+        stats_frame.pack(fill='both', expand=True, padx=20, pady=10)
+
+        # 통계 데이터 표시
+        stats_text = f"""
+        🎮 총 게임 수: {user_data.get('total_games', 0)}회
+        🏆 최고 점수: {user_data.get('best_score', 0)}점
+        📈 평균 점수: {user_data.get('total_score', 0) / max(1, user_data.get('total_games', 1)):.1f}점
+        💯 총 누적 점수: {user_data.get('total_score', 0)}점
+        """
+
+        stats_label = tk.Label(
+            stats_frame,
+            text=stats_text,
+            font=self.fonts['body'],
+            bg='white',
+            fg=self.colors['text'],
+            justify='left'
+        )
+        stats_label.pack(expand=True, pady=20)
+
+        return stats_window
+</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- data.json 탭 -->
+                    <div id="data-tab" class="code-tab-content hidden">
+                        <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre><code>{
+  "app_info": {
+    "name": "수학 퀴즈 앱",
+    "version": "1.0.0",
+    "author": "이지은",
+    "created_date": "2024-12-10",
+    "description": "초등학생을 위한 재미있는 수학 문제 생성기"
+  },
+  "difficulty_settings": {
+    "1": {
+      "name": "쉬움",
+      "description": "한 자리 수 연산",
+      "number_range": [1, 9],
+      "operations": ["+", "-", "×", "÷"],
+      "score_multiplier": 1
+    },
+    "2": {
+      "name": "보통",
+      "description": "두 자리 수 연산",
+      "number_range": [10, 99],
+      "operations": ["+", "-", "×", "÷"],
+      "score_multiplier": 2
+    },
+    "3": {
+      "name": "어려움",
+      "description": "세 자리 수 연산",
+      "number_range": [100, 999],
+      "operations": ["+", "-", "×", "÷"],
+      "score_multiplier": 3
+    },
+    "4": {
+      "name": "매우 어려움",
+      "description": "큰 수 연산",
+      "number_range": [1000, 9999],
+      "operations": ["+", "-", "×", "÷"],
+      "score_multiplier": 4
+    }
+  },
+  "quiz_templates": [
+    {
+      "type": "basic_addition",
+      "template": "{num1} + {num2} = ?",
+      "description": "기본 덧셈 문제"
+    },
+    {
+      "type": "basic_subtraction",
+      "template": "{num1} - {num2} = ?",
+      "description": "기본 뺄셈 문제"
+    },
+    {
+      "type": "basic_multiplication",
+      "template": "{num1} × {num2} = ?",
+      "description": "기본 곱셈 문제"
+    },
+    {
+      "type": "basic_division",
+      "template": "{num1} ÷ {num2} = ?",
+      "description": "기본 나눗셈 문제"
+    },
+    {
+      "type": "word_problem",
+      "template": "철수가 사탕 {num1}개를 가지고 있습니다. 영희에게 {num2}개를 주었다면 철수에게 남은 사탕은 몇 개일까요?",
+      "description": "문장형 문제"
+    }
+  ],
+  "achievement_system": {
+    "badges": [
+      {
+        "id": "first_quiz",
+        "name": "첫 도전",
+        "description": "첫 번째 퀴즈 완료",
+        "icon": "🏁",
+        "requirement": "complete_first_quiz"
+      },
+      {
+        "id": "perfect_score",
+        "name": "완벽한 점수",
+        "description": "100점 달성",
+        "icon": "💯",
+        "requirement": "score_100"
+      },
+      {
+        "id": "speed_demon",
+        "name": "스피드 왕",
+        "description": "30초 안에 문제 해결",
+        "icon": "⚡",
+        "requirement": "solve_under_30sec"
+      },
+      {
+        "id": "math_genius",
+        "name": "수학 천재",
+        "description": "어려움 단계에서 90점 이상",
+        "icon": "🧠",
+        "requirement": "hard_mode_90plus"
+      },
+      {
+        "id": "persistent_learner",
+        "name": "끈기 있는 학습자",
+        "description": "10번 이상 퀴즈 완주",
+        "icon": "🎯",
+        "requirement": "complete_10_quizzes"
+      }
+    ]
+  },
+  "ui_settings": {
+    "colors": {
+      "primary": "#3498db",
+      "success": "#27ae60",
+      "warning": "#f39c12",
+      "danger": "#e74c3c",
+      "background": "#ecf0f1"
+    },
+    "fonts": {
+      "title_size": 24,
+      "subtitle_size": 16,
+      "body_size": 12,
+      "font_family": "맑은 고딕"
+    },
+    "animations": {
+      "correct_answer": "bounce",
+      "wrong_answer": "shake",
+      "level_up": "glow"
+    }
+  },
+  "sample_questions": [
+    {
+      "question": "5 + 3 = ?",
+      "answer": 8,
+      "difficulty": 1,
+      "type": "addition"
+    },
+    {
+      "question": "12 - 7 = ?",
+      "answer": 5,
+      "difficulty": 1,
+      "type": "subtraction"
+    },
+    {
+      "question": "6 × 4 = ?",
+      "answer": 24,
+      "difficulty": 2,
+      "type": "multiplication"
+    },
+    {
+      "question": "28 ÷ 7 = ?",
+      "answer": 4,
+      "difficulty": 2,
+      "type": "division"
+    },
+    {
+      "question": "145 + 67 = ?",
+      "answer": 212,
+      "difficulty": 3,
+      "type": "addition"
+    }
+  ],
+  "statistics_template": {
+    "total_games": 0,
+    "total_questions_answered": 0,
+    "correct_answers": 0,
+    "best_score": 0,
+    "best_time": null,
+    "favorite_operation": null,
+    "current_streak": 0,
+    "longest_streak": 0,
+    "badges_earned": [],
+    "daily_progress": {},
+    "weekly_goals": {
+      "questions_target": 50,
+      "accuracy_target": 80
+    }
+  }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 추천 프로젝트 -->
+        <section class="bg-white rounded-2xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">비슷한 프로젝트</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-purple-300 to-pink-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-book text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">영어 단어 학습기</h4>
+                    <p class="text-sm text-gray-600 mb-3">김태현 (중학교 1학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-blue-300 to-cyan-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">기억력 게임</h4>
+                    <p class="text-sm text-gray-600 mb-3">정수민 (초등학교 5학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-orange-300 to-red-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-clock text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">시간 학습 도구</h4>
+                    <p class="text-sm text-gray-600 mb-3">박시우 (초등학교 4학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/project-math-quiz.js"></script>
+</body>
+</html>

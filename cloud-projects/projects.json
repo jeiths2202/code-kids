@@ -1,0 +1,250 @@
+{
+  "projects": [
+    {
+      "id": "cloud_001",
+      "title": "미로 탈출 게임",
+      "description": "논리적 사고력을 기르는 미로 게임입니다. 캐릭터를 조종하여 미로를 탈출하세요!",
+      "category": "game",
+      "difficulty": "중급",
+      "author": "CodeKids",
+      "rating": 4.8,
+      "downloads": 1234,
+      "fileSize": "2.3MB",
+      "thumbnail": "maze-game.png",
+      "filePath": "/cloud-projects/files/maze-game.sb3",
+      "tags": ["퍼즐", "로직", "게임", "미로"],
+      "createdAt": "2024-01-15",
+      "features": [
+        "여러 레벨의 미로",
+        "시간 제한 모드",
+        "점수 시스템",
+        "효과음 및 배경음악"
+      ]
+    },
+    {
+      "id": "cloud_002",
+      "title": "춤추는 고양이",
+      "description": "음악에 맞춰 춤추는 재미있는 애니메이션입니다.",
+      "category": "animation",
+      "difficulty": "초급",
+      "author": "CodeKids",
+      "rating": 4.5,
+      "downloads": 892,
+      "fileSize": "1.8MB",
+      "thumbnail": "dancing-cat.png",
+      "filePath": "/cloud-projects/files/dancing-cat.sb3",
+      "tags": ["애니메이션", "음악", "춤", "고양이"],
+      "createdAt": "2024-01-20",
+      "features": [
+        "다양한 춤 동작",
+        "음악 선택 기능",
+        "배경 변경",
+        "속도 조절"
+      ]
+    },
+    {
+      "id": "cloud_003",
+      "title": "구구단 게임",
+      "description": "재미있게 구구단을 배우는 교육용 게임입니다.",
+      "category": "education",
+      "difficulty": "초급",
+      "author": "CodeKids",
+      "rating": 4.9,
+      "downloads": 2156,
+      "fileSize": "1.5MB",
+      "thumbnail": "multiplication.png",
+      "filePath": "/cloud-projects/files/multiplication-game.sb3",
+      "tags": ["교육", "수학", "구구단", "학습"],
+      "createdAt": "2024-01-18",
+      "features": [
+        "레벨별 난이도",
+        "시간 제한 모드",
+        "점수 및 순위",
+        "틀린 문제 복습"
+      ]
+    },
+    {
+      "id": "cloud_004",
+      "title": "우주 탐험",
+      "description": "우주선을 조종하여 행성을 탐험하는 어드벤처 게임입니다.",
+      "category": "game",
+      "difficulty": "고급",
+      "author": "CodeKids",
+      "rating": 4.7,
+      "downloads": 1567,
+      "fileSize": "3.2MB",
+      "thumbnail": "space-adventure.png",
+      "filePath": "/cloud-projects/files/space-adventure.sb3",
+      "tags": ["우주", "탐험", "어드벤처", "슈팅"],
+      "createdAt": "2024-01-22",
+      "features": [
+        "다양한 행성 탐험",
+        "우주선 업그레이드",
+        "적과의 전투",
+        "아이템 수집"
+      ]
+    },
+    {
+      "id": "cloud_005",
+      "title": "피아노 연주",
+      "description": "키보드로 피아노를 연주할 수 있는 음악 앱입니다.",
+      "category": "art",
+      "difficulty": "중급",
+      "author": "CodeKids",
+      "rating": 4.6,
+      "downloads": 1023,
+      "fileSize": "2.1MB",
+      "thumbnail": "piano.png",
+      "filePath": "/cloud-projects/files/piano-player.sb3",
+      "tags": ["음악", "피아노", "악기", "연주"],
+      "createdAt": "2024-01-25",
+      "features": [
+        "88건반 피아노",
+        "다양한 악기 소리",
+        "녹음 기능",
+        "악보 표시"
+      ]
+    },
+    {
+      "id": "cloud_006",
+      "title": "그림판",
+      "description": "마우스로 자유롭게 그림을 그릴 수 있는 그림판입니다.",
+      "category": "art",
+      "difficulty": "초급",
+      "author": "CodeKids",
+      "rating": 4.4,
+      "downloads": 789,
+      "fileSize": "1.2MB",
+      "thumbnail": "paint.png",
+      "filePath": "/cloud-projects/files/paint-app.sb3",
+      "tags": ["그림", "예술", "창작", "페인트"],
+      "createdAt": "2024-01-28",
+      "features": [
+        "다양한 브러시",
+        "색상 선택기",
+        "도형 그리기",
+        "지우개 기능"
+      ]
+    },
+    {
+      "id": "cloud_007",
+      "title": "공룡 러너",
+      "description": "장애물을 피해 달리는 무한 러닝 게임입니다.",
+      "category": "game",
+      "difficulty": "중급",
+      "author": "CodeKids",
+      "rating": 4.8,
+      "downloads": 1892,
+      "fileSize": "2.5MB",
+      "thumbnail": "dino-runner.png",
+      "filePath": "/cloud-projects/files/dino-runner.sb3",
+      "tags": ["러닝", "공룡", "아케이드", "액션"],
+      "createdAt": "2024-02-01",
+      "features": [
+        "점프와 슬라이드",
+        "속도 증가 시스템",
+        "파워업 아이템",
+        "최고 점수 기록"
+      ]
+    },
+    {
+      "id": "cloud_008",
+      "title": "영어 단어 퀴즈",
+      "description": "영어 단어를 재미있게 배우는 학습 퀴즈입니다.",
+      "category": "education",
+      "difficulty": "초급",
+      "author": "CodeKids",
+      "rating": 4.7,
+      "downloads": 1456,
+      "fileSize": "1.7MB",
+      "thumbnail": "english-quiz.png",
+      "filePath": "/cloud-projects/files/english-quiz.sb3",
+      "tags": ["영어", "교육", "퀴즈", "단어"],
+      "createdAt": "2024-02-05",
+      "features": [
+        "주제별 단어 학습",
+        "발음 듣기",
+        "이미지 매칭",
+        "진도 추적"
+      ]
+    },
+    {
+      "id": "cloud_009",
+      "title": "파티클 효과",
+      "description": "아름다운 파티클 애니메이션을 만들어보세요.",
+      "category": "animation",
+      "difficulty": "고급",
+      "author": "CodeKids",
+      "rating": 4.9,
+      "downloads": 967,
+      "fileSize": "2.8MB",
+      "thumbnail": "particles.png",
+      "filePath": "/cloud-projects/files/particle-effects.sb3",
+      "tags": ["파티클", "효과", "애니메이션", "비주얼"],
+      "createdAt": "2024-02-08",
+      "features": [
+        "다양한 파티클 패턴",
+        "색상 변경",
+        "중력 효과",
+        "마우스 인터랙션"
+      ]
+    },
+    {
+      "id": "cloud_010",
+      "title": "디지털 시계",
+      "description": "현재 시간을 보여주는 디지털 시계입니다.",
+      "category": "education",
+      "difficulty": "중급",
+      "author": "CodeKids",
+      "rating": 4.3,
+      "downloads": 634,
+      "fileSize": "1.1MB",
+      "thumbnail": "clock.png",
+      "filePath": "/cloud-projects/files/digital-clock.sb3",
+      "tags": ["시계", "시간", "교육", "디지털"],
+      "createdAt": "2024-02-10",
+      "features": [
+        "디지털/아날로그 모드",
+        "알람 기능",
+        "스톱워치",
+        "타임존 설정"
+      ]
+    }
+  ],
+  "categories": {
+    "game": {
+      "label": "게임",
+      "icon": "fa-gamepad",
+      "color": "purple"
+    },
+    "animation": {
+      "label": "애니메이션",
+      "icon": "fa-film",
+      "color": "blue"
+    },
+    "education": {
+      "label": "교육",
+      "icon": "fa-graduation-cap",
+      "color": "green"
+    },
+    "art": {
+      "label": "예술",
+      "icon": "fa-palette",
+      "color": "yellow"
+    }
+  },
+  "difficulties": {
+    "초급": {
+      "color": "green",
+      "level": 1
+    },
+    "중급": {
+      "color": "yellow",
+      "level": 2
+    },
+    "고급": {
+      "color": "red",
+      "level": 3
+    }
+  }
+}

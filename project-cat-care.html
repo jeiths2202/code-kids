@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고양이 케어 게임 - CodeKids 학생 작품</title>
+
+    <!-- 외부 라이브러리 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 커스텀 스타일 -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#06B6D4',
+                        accent: '#F59E0B',
+                        success: '#10B981'
+                    },
+                    fontFamily: {
+                        'korean': ['Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-korean bg-gray-100 min-h-screen">
+    <!-- CodeKids 헤더 -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- 로고 -->
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">CodeKids</h1>
+                    </a>
+
+                    <!-- 브레드크럼 -->
+                    <div class="hidden md:flex items-center text-gray-600">
+                        <div class="w-px h-6 bg-gray-300 mx-4"></div>
+                        <a href="index.html" class="hover:text-primary">홈</a>
+                        <i class="fas fa-chevron-right mx-2 text-sm"></i>
+                        <a href="index.html#projects" class="hover:text-primary">학생 작품</a>
+                        <i class="fas fa-chevron-right mx-2 text-sm"></i>
+                        <span class="text-gray-800 font-semibold">고양이 케어 게임</span>
+                    </div>
+                </div>
+
+                <!-- 네비게이션 -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="hidden md:flex items-center px-3 py-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        <span>홈으로</span>
+                    </a>
+                    <a href="editor.html" class="hidden md:flex items-center px-3 py-2 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-puzzle-piece mr-2"></i>
+                        <span>코딩 실험실</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 프로젝트 헤더 -->
+        <section class="bg-gradient-to-r from-pink-300 to-purple-300 rounded-3xl p-8 md:p-12 text-white mb-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="w-32 h-32 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mb-6 md:mb-0 md:mr-8">
+                    <i class="fas fa-cat text-6xl"></i>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">고양이 케어 게임</h1>
+                    <p class="text-xl mb-4 opacity-90">스크래치로 만든 가상 펫 키우기 시뮬레이션</p>
+                    <div class="flex flex-wrap justify-center md:justify-start items-center space-x-6 text-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user mr-2"></i>
+                            <span>김민수 (중학교 1학년)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-heart mr-2"></i>
+                            <span>124 좋아요</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span>2024.12.15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 프로젝트 액션 버튼 -->
+        <section class="flex flex-col sm:flex-row gap-4 mb-8">
+            <button id="play-game-btn" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-play mr-3"></i>
+                게임 실행하기
+            </button>
+            <button id="view-source-btn" class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-code mr-3"></i>
+                소스코드 보기
+            </button>
+            <button id="edit-project-btn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <i class="fas fa-edit mr-3"></i>
+                편집하기
+            </button>
+        </section>
+
+        <!-- 프로젝트 정보 그리드 -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- 프로젝트 설명 -->
+            <section class="bg-white rounded-2xl p-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">프로젝트 소개</h2>
+                <div class="space-y-4">
+                    <p class="text-gray-600 leading-relaxed">
+                        이 게임은 스크래치를 사용하여 제작된 가상 펫 키우기 시뮬레이션입니다.
+                        플레이어는 귀여운 고양이를 돌보며 다양한 활동을 통해 고양이의 행복도를 높일 수 있습니다.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        게임에는 먹이 주기, 놀아주기, 청소하기 등의 기본 케어 기능과
+                        고양이의 상태에 따른 다양한 반응이 구현되어 있습니다.
+                    </p>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">주요 기능</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-utensils text-orange-500 mr-2"></i>
+                            <span class="text-sm">먹이 주기</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-gamepad text-blue-500 mr-2"></i>
+                            <span class="text-sm">놀아주기</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-bath text-cyan-500 mr-2"></i>
+                            <span class="text-sm">씻기기</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-bed text-purple-500 mr-2"></i>
+                            <span class="text-sm">재우기</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-chart-line text-green-500 mr-2"></i>
+                            <span class="text-sm">상태 관리</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                            <span class="text-sm">성취 시스템</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 기술 정보 -->
+            <section class="bg-white rounded-2xl p-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">기술 정보</h2>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">사용 기술</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">Scratch 3.0</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">블록 프로그래밍</span>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">이벤트 처리</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">변수 관리</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">학습 개념</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                조건문 (if-else)
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                반복문 (forever, repeat)
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                변수와 리스트
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                이벤트 프로그래밍
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                스프라이트 제어
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">프로젝트 통계</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-blue-600">25</div>
+                                <div class="text-sm text-blue-700">블록 수</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-green-600">8</div>
+                                <div class="text-sm text-green-700">스프라이트</div>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-purple-600">12</div>
+                                <div class="text-sm text-purple-700">변수</div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-orange-600">6</div>
+                                <div class="text-sm text-orange-700">이벤트</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 게임 실행 영역 -->
+        <section id="game-container" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 hidden">
+            <div class="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold">고양이 케어 게임 실행 중</h2>
+                    <button id="close-game-btn" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-4">
+                <div id="scratch-player" class="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <iframe id="game-iframe"
+                            src=""
+                            class="w-full h-full border-0 hidden"
+                            title="고양이 케어 게임">
+                    </iframe>
+                    <div id="game-loading" class="text-center">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mb-4"></div>
+                        <p class="text-gray-600">게임을 로딩하고 있습니다...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 소스코드 보기 영역 -->
+        <section id="source-container" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold">소스코드 보기</h2>
+                    <button id="close-source-btn" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <div class="flex items-center space-x-4">
+                        <button class="code-tab-btn active bg-blue-100 text-blue-700 px-4 py-2 rounded-lg" data-tab="blocks">
+                            <i class="fas fa-cubes mr-2"></i>블록 다이어그램
+                        </button>
+                        <button class="code-tab-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" data-tab="sprites">
+                            <i class="fas fa-image mr-2"></i>스프라이트 목록
+                        </button>
+                        <button class="code-tab-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" data-tab="variables">
+                            <i class="fas fa-database mr-2"></i>변수 목록
+                        </button>
+                    </div>
+                </div>
+
+                <div id="code-content" class="min-h-96">
+                    <!-- 블록 다이어그램 탭 -->
+                    <div id="blocks-tab" class="code-tab-content">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-800 mb-3">메인 이벤트 블록</h3>
+                                <div class="space-y-2">
+                                    <div class="bg-green-500 text-white p-2 rounded text-sm">🏁 초록 깃발을 클릭했을 때</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-4">🐱 고양이 상태를 100으로 설정</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-4">❤️ 행복도를 50으로 설정</div>
+                                    <div class="bg-blue-500 text-white p-2 rounded text-sm ml-4">🔄 계속 반복하기</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-800 mb-3">먹이 주기 블록</h3>
+                                <div class="space-y-2">
+                                    <div class="bg-yellow-500 text-white p-2 rounded text-sm">🍽️ 먹이 버튼을 클릭했을 때</div>
+                                    <div class="bg-purple-500 text-white p-2 rounded text-sm ml-4">❓ 만약 배고픔 > 20 이라면</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-8">📈 배고픔을 20 줄이기</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-8">😸 "냠냠" 말하기</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-800 mb-3">놀이 블록</h3>
+                                <div class="space-y-2">
+                                    <div class="bg-pink-500 text-white p-2 rounded text-sm">🎾 놀이 버튼을 클릭했을 때</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-4">📈 행복도를 15 늘리기</div>
+                                    <div class="bg-blue-500 text-white p-2 rounded text-sm ml-4">🎵 "야옹" 소리 재생</div>
+                                    <div class="bg-green-500 text-white p-2 rounded text-sm ml-4">💃 3초 동안 춤추기</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-800 mb-3">상태 체크 블록</h3>
+                                <div class="space-y-2">
+                                    <div class="bg-red-500 text-white p-2 rounded text-sm">⏰ 타이머 이벤트</div>
+                                    <div class="bg-purple-500 text-white p-2 rounded text-sm ml-4">❓ 만약 행복도 < 20 이라면</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-8">😿 슬픈 표정으로 바꾸기</div>
+                                    <div class="bg-purple-500 text-white p-2 rounded text-sm ml-4">❓ 그렇지 않으면</div>
+                                    <div class="bg-orange-500 text-white p-2 rounded text-sm ml-8">😊 행복한 표정으로 바꾸기</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 스프라이트 목록 탭 -->
+                    <div id="sprites-tab" class="code-tab-content hidden">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-orange-50 border border-orange-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-cat text-4xl text-orange-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">고양이 (Cat)</h4>
+                                <p class="text-sm text-gray-600 text-center">메인 캐릭터</p>
+                            </div>
+                            <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-utensils text-4xl text-green-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">먹이그릇 (Bowl)</h4>
+                                <p class="text-sm text-gray-600 text-center">먹이 주기 버튼</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-gamepad text-4xl text-pink-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">장난감 (Toy)</h4>
+                                <p class="text-sm text-gray-600 text-center">놀이 버튼</p>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-bath text-4xl text-blue-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">욕조 (Bath)</h4>
+                                <p class="text-sm text-gray-600 text-center">씻기기 버튼</p>
+                            </div>
+                            <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-bed text-4xl text-purple-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">침대 (Bed)</h4>
+                                <p class="text-sm text-gray-600 text-center">재우기 버튼</p>
+                            </div>
+                            <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-home text-4xl text-gray-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-center">배경 (Room)</h4>
+                                <p class="text-sm text-gray-600 text-center">고양이 방</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 변수 목록 탭 -->
+                    <div id="variables-tab" class="code-tab-content hidden">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">게임 상태 변수</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-red-50 border-l-4 border-red-400 p-3">
+                                        <div class="font-semibold text-red-800">배고픔 (hunger)</div>
+                                        <div class="text-sm text-red-600">0-100, 시간이 지나면 증가</div>
+                                    </div>
+                                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3">
+                                        <div class="font-semibold text-blue-800">행복도 (happiness)</div>
+                                        <div class="text-sm text-blue-600">0-100, 놀아주면 증가</div>
+                                    </div>
+                                    <div class="bg-green-50 border-l-4 border-green-400 p-3">
+                                        <div class="font-semibold text-green-800">청결도 (cleanliness)</div>
+                                        <div class="text-sm text-green-600">0-100, 씻기면 증가</div>
+                                    </div>
+                                    <div class="bg-purple-50 border-l-4 border-purple-400 p-3">
+                                        <div class="font-semibold text-purple-800">에너지 (energy)</div>
+                                        <div class="text-sm text-purple-600">0-100, 재우면 회복</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">게임 데이터 변수</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3">
+                                        <div class="font-semibold text-yellow-800">점수 (score)</div>
+                                        <div class="text-sm text-yellow-600">케어 활동으로 획득</div>
+                                    </div>
+                                    <div class="bg-orange-50 border-l-4 border-orange-400 p-3">
+                                        <div class="font-semibold text-orange-800">레벨 (level)</div>
+                                        <div class="text-sm text-orange-600">점수에 따라 증가</div>
+                                    </div>
+                                    <div class="bg-pink-50 border-l-4 border-pink-400 p-3">
+                                        <div class="font-semibold text-pink-800">게임시간 (gameTime)</div>
+                                        <div class="text-sm text-pink-600">게임 경과 시간 (초)</div>
+                                    </div>
+                                    <div class="bg-indigo-50 border-l-4 border-indigo-400 p-3">
+                                        <div class="font-semibold text-indigo-800">상태텍스트 (statusText)</div>
+                                        <div class="text-sm text-indigo-600">현재 고양이 상태 메시지</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 추천 프로젝트 -->
+        <section class="bg-white rounded-2xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">비슷한 프로젝트</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-green-300 to-teal-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-dog text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">강아지 키우기</h4>
+                    <p class="text-sm text-gray-600 mb-3">이서연 (초등학교 6학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-yellow-300 to-orange-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-fish text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">물고기 어항 게임</h4>
+                    <p class="text-sm text-gray-600 mb-3">박준혁 (중학교 2학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="h-32 bg-gradient-to-r from-purple-300 to-pink-300 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-seedling text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">화분 키우기</h4>
+                    <p class="text-sm text-gray-600 mb-3">최민지 (초등학교 5학년)</p>
+                    <button class="text-primary font-semibold text-sm hover:text-indigo-700">보러가기 →</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/project-cat-care.js"></script>
+</body>
+</html>

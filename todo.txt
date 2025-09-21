@@ -1,0 +1,15 @@
+# 1. Scratch GUI 클론
+mkdir scratch-editor
+cd scratch-editor
+git clone https://github.com/scratchfoundation/scratch-gui.git
+cd scratch-gui
+
+# 2. 의존성 설치
+npm install
+
+# 3. 개발 서버 시작
+npm start
+# → http://localhost:8602 에서 Scratch GUI 실행됨
+
+# 4. CodeKids와 연동
+# editor.html에서 iframe이 자동으로 localhost:8602를 감지하여 통합

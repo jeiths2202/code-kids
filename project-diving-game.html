@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잠수 게임 - CodeKids</title>
+
+    <!-- 외부 라이브러리 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 커스텀 스타일 -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#06B6D4',
+                        accent: '#F59E0B',
+                        success: '#10B981'
+                    },
+                    fontFamily: {
+                        'korean': ['Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-korean bg-gray-50 min-h-screen">
+    <!-- 헤더 -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">CodeKids</h1>
+                    </a>
+                    <div class="hidden md:flex items-center">
+                        <div class="w-px h-6 bg-gray-300 mx-4"></div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-swimmer text-blue-500"></i>
+                            <span class="text-lg font-semibold text-gray-700">잠수 게임</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        돌아가기
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 프로젝트 헤더 -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-2/3">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-swimmer text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800 mb-2">잠수 게임</h1>
+                            <p class="text-gray-600">물리 법칙을 활용한 재미있는 스크래치 게임</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                            <i class="fas fa-puzzle-piece text-blue-600 text-xl mb-2"></i>
+                            <p class="text-sm font-semibold text-gray-700">언어</p>
+                            <p class="text-xs text-gray-600">Scratch 3.0</p>
+                        </div>
+                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-clock text-green-600 text-xl mb-2"></i>
+                            <p class="text-sm font-semibold text-gray-700">예상 시간</p>
+                            <p class="text-xs text-gray-600">3-4시간</p>
+                        </div>
+                        <div class="text-center p-3 bg-orange-50 rounded-lg">
+                            <i class="fas fa-star text-orange-600 text-xl mb-2"></i>
+                            <p class="text-sm font-semibold text-gray-700">난이도</p>
+                            <p class="text-xs text-gray-600">중급</p>
+                        </div>
+                        <div class="text-center p-3 bg-purple-50 rounded-lg">
+                            <i class="fas fa-users text-purple-600 text-xl mb-2"></i>
+                            <p class="text-sm font-semibold text-gray-700">대상</p>
+                            <p class="text-xs text-gray-600">초중학생</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/3">
+                    <div class="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">🎯 학습 목표</h3>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i>중력과 부력 개념 이해하기</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i>물리 시뮬레이션 구현하기</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i>게임 메커니즘 설계하기</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i>충돌 감지 및 처리하기</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+            <div class="border-b">
+                <nav class="flex">
+                    <button class="tab-btn active px-6 py-4 text-blue-600 border-b-2 border-blue-600 font-semibold" data-tab="demo">
+                        <i class="fas fa-play mr-2"></i>
+                        게임하기
+                    </button>
+                    <button class="tab-btn px-6 py-4 text-gray-600 hover:text-blue-600 font-semibold" data-tab="source">
+                        <i class="fas fa-code mr-2"></i>
+                        소스코드
+                    </button>
+                    <button class="tab-btn px-6 py-4 text-gray-600 hover:text-blue-600 font-semibold" data-tab="tutorial">
+                        <i class="fas fa-book mr-2"></i>
+                        튜토리얼
+                    </button>
+                </nav>
+            </div>
+
+            <!-- 게임하기 탭 -->
+            <div id="demo-tab" class="tab-content active p-8">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">🏊‍♂️ 잠수 게임 체험</h3>
+                    <p class="text-gray-600">방향키를 사용해서 다이버를 조종하고 보물을 수집하세요!</p>
+                </div>
+
+                <!-- 게임 화면 -->
+                <div class="bg-gradient-to-b from-blue-200 to-blue-800 rounded-xl p-4 mb-6 relative overflow-hidden" id="game-container">
+                    <div class="absolute top-4 left-4 bg-white rounded-lg p-3 shadow-lg">
+                        <div class="text-sm">
+                            <div class="flex items-center mb-1">
+                                <i class="fas fa-star text-yellow-500 mr-2"></i>
+                                <span class="font-semibold">점수: <span id="score">0</span></span>
+                            </div>
+                            <div class="flex items-center mb-1">
+                                <i class="fas fa-heart text-red-500 mr-2"></i>
+                                <span class="font-semibold">생명: <span id="lives">3</span></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                <span class="font-semibold">시간: <span id="time">60</span>s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg">
+                        <button id="start-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                            <i class="fas fa-play mr-2"></i>시작
+                        </button>
+                        <button id="reset-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 ml-2">
+                            <i class="fas fa-redo mr-2"></i>재시작
+                        </button>
+                    </div>
+
+                    <!-- 게임 영역 -->
+                    <div class="h-96 relative" id="game-area">
+                        <!-- 다이버 -->
+                        <div id="diver" class="absolute w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold transition-all duration-100">
+                            🤿
+                        </div>
+
+                        <!-- 보물들 -->
+                        <div id="treasures"></div>
+
+                        <!-- 장애물들 -->
+                        <div id="obstacles"></div>
+
+                        <!-- 수면 표시 -->
+                        <div class="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-blue-300 to-transparent">
+                            <div class="text-center pt-2 text-white font-semibold">🌊 수면 🌊</div>
+                        </div>
+
+                        <!-- 해저 표시 -->
+                        <div class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-yellow-800 to-transparent">
+                            <div class="text-center pt-8 text-yellow-200 font-semibold">🪨 해저 🪨</div>
+                        </div>
+                    </div>
+
+                    <!-- 게임 상태 메시지 -->
+                    <div id="game-message" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-2xl font-bold hidden">
+                        게임을 시작하려면 시작 버튼을 클릭하세요!
+                    </div>
+                </div>
+
+                <!-- 게임 조작법 -->
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4">🎮 조작법</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-2">키보드 조작</h5>
+                            <ul class="space-y-1 text-sm text-gray-600">
+                                <li>• ↑ : 위로 수영 (부력 감소)</li>
+                                <li>• ↓ : 아래로 수영 (중력 증가)</li>
+                                <li>• ← : 왼쪽으로 이동</li>
+                                <li>• → : 오른쪽으로 이동</li>
+                                <li>• 스페이스바 : 일시정지</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-2">게임 규칙</h5>
+                            <ul class="space-y-1 text-sm text-gray-600">
+                                <li>• 💰 보물을 수집하여 점수 획득</li>
+                                <li>• 🪨 바위에 닿으면 생명 감소</li>
+                                <li>• ⏰ 제한시간 내에 최대한 많은 점수</li>
+                                <li>• 💨 공기 보충을 위해 수면 방문</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 코딩 실험실 링크 -->
+                <div class="mt-6 bg-white border-2 border-green-200 rounded-xl overflow-hidden">
+                    <div class="bg-green-500 text-white p-3 flex items-center justify-between">
+                        <span class="font-semibold">🎨 스크래치에서 만들어보기</span>
+                        <a href="editor.html" class="bg-white text-green-600 px-3 py-1 rounded-lg text-sm font-semibold hover:bg-gray-100">
+                            에디터에서 열기
+                        </a>
+                    </div>
+                    <div class="p-6 text-center bg-gradient-to-br from-green-50 to-emerald-50">
+                        <i class="fas fa-puzzle-piece text-6xl text-green-400 mb-4"></i>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">스크래치로 잠수 게임 만들기</h4>
+                        <p class="text-gray-600 mb-4">물리 법칙을 활용한 재미있는 게임을 직접 구현해보세요!</p>
+                        <button onclick="downloadDivingGameTemplate()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+                            <i class="fas fa-download mr-2"></i>
+                            템플릿 다운로드
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소스코드 탭 -->
+            <div id="source-tab" class="tab-content hidden p-8">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 소스코드 보기</h3>
+                    <p class="text-gray-600">잠수 게임의 핵심 로직을 확인해보세요</p>
+                </div>
+
+                <!-- 언어 선택 탭 -->
+                <div class="flex border-b mb-6">
+                    <button class="code-tab-btn active px-4 py-2 text-green-600 border-b-2 border-green-600" data-lang="scratch">
+                        <i class="fas fa-puzzle-piece mr-2"></i>Scratch
+                    </button>
+                    <button class="code-tab-btn px-4 py-2 text-gray-600 hover:text-green-600" data-lang="javascript">
+                        <i class="fab fa-js-square mr-2"></i>JavaScript
+                    </button>
+                    <button class="code-tab-btn px-4 py-2 text-gray-600 hover:text-green-600" data-lang="python">
+                        <i class="fab fa-python mr-2"></i>Python
+                    </button>
+                </div>
+
+                <!-- Scratch 코드 -->
+                <div id="scratch-code" class="code-content active">
+                    <div class="bg-gray-900 rounded-lg p-6 text-white">
+                        <h4 class="text-lg font-bold mb-4">🧩 스크래치 블록 구성</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="space-y-4">
+                                <div class="bg-blue-600 p-3 rounded">
+                                    <strong>1. 다이버 움직임</strong><br>
+                                    - 방향키로 이동 제어<br>
+                                    - 중력과 부력 시뮬레이션<br>
+                                    - 화면 경계 처리
+                                </div>
+                                <div class="bg-green-600 p-3 rounded">
+                                    <strong>2. 보물 생성</strong><br>
+                                    - 랜덤 위치에 보물 생성<br>
+                                    - 충돌 감지 및 점수 증가<br>
+                                    - 보물 제거 및 재생성
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-red-600 p-3 rounded">
+                                    <strong>3. 장애물 시스템</strong><br>
+                                    - 바위 장애물 배치<br>
+                                    - 충돌시 생명 감소<br>
+                                    - 게임오버 조건 확인
+                                </div>
+                                <div class="bg-purple-600 p-3 rounded">
+                                    <strong>4. 게임 관리</strong><br>
+                                    - 점수 및 시간 관리<br>
+                                    - 게임 상태 제어<br>
+                                    - UI 업데이트
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button onclick="alert('스크래치 파일을 다운로드합니다!')" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                                <i class="fas fa-download mr-2"></i>
+                                .sb3 파일 다운로드
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript 코드 -->
+                <div id="javascript-code" class="code-content hidden">
+                    <div class="bg-gray-900 rounded-lg p-6 text-white overflow-x-auto">
+                        <h4 class="text-lg font-bold mb-4">🟨 JavaScript 구현 (핵심 로직)</h4>
+                        <pre><code class="text-sm">
+class DivingGame {
+    constructor() {
+        this.diver = { x: 200, y: 100, vx: 0, vy: 0 };
+        this.treasures = [];
+        this.obstacles = [];
+        this.score = 0;
+        this.lives = 3;
+        this.time = 60;
+        this.gameRunning = false;
+        this.gravity = 0.2;
+        this.buoyancy = -0.1;
+    }
+
+    // 물리 시뮬레이션
+    updatePhysics() {
+        // 중력과 부력 적용
+        if (this.diver.y < 64) { // 수면 위
+            this.diver.vy += this.buoyancy;
+        } else { // 물 속
+            this.diver.vy += this.gravity;
+        }
+
+        // 위치 업데이트
+        this.diver.x += this.diver.vx;
+        this.diver.y += this.diver.vy;
+
+        // 마찰력 적용
+        this.diver.vx *= 0.95;
+        this.diver.vy *= 0.98;
+    }
+
+    // 충돌 감지
+    checkCollisions() {
+        this.treasures.forEach((treasure, index) => {
+            if (this.distance(this.diver, treasure) < 20) {
+                this.score += 10;
+                this.treasures.splice(index, 1);
+                this.spawnTreasure();
+            }
+        });
+
+        this.obstacles.forEach(obstacle => {
+            if (this.distance(this.diver, obstacle) < 25) {
+                this.lives--;
+                this.resetDiverPosition();
+            }
+        });
+    }
+
+    // 거리 계산
+    distance(obj1, obj2) {
+        return Math.sqrt(
+            Math.pow(obj1.x - obj2.x, 2) +
+            Math.pow(obj1.y - obj2.y, 2)
+        );
+    }
+}
+                        </code></pre>
+                    </div>
+                </div>
+
+                <!-- Python 코드 -->
+                <div id="python-code" class="code-content hidden">
+                    <div class="bg-gray-900 rounded-lg p-6 text-white overflow-x-auto">
+                        <h4 class="text-lg font-bold mb-4">🐍 Python 구현 (pygame)</h4>
+                        <pre><code class="text-sm">
+import pygame
+import random
+import math
+
+class DivingGame:
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((800, 600))
+        self.clock = pygame.time.Clock()
+
+        self.diver = {"x": 400, "y": 100, "vx": 0, "vy": 0}
+        self.treasures = []
+        self.obstacles = []
+        self.score = 0
+        self.lives = 3
+        self.time = 60
+        self.gravity = 0.2
+        self.buoyancy = -0.1
+
+        self.spawn_treasures()
+        self.spawn_obstacles()
+
+    def update_physics(self):
+        """물리 시뮬레이션 업데이트"""
+        # 중력과 부력 적용
+        if self.diver["y"] < 64:  # 수면 위
+            self.diver["vy"] += self.buoyancy
+        else:  # 물 속
+            self.diver["vy"] += self.gravity
+
+        # 위치 업데이트
+        self.diver["x"] += self.diver["vx"]
+        self.diver["y"] += self.diver["vy"]
+
+        # 마찰력 적용
+        self.diver["vx"] *= 0.95
+        self.diver["vy"] *= 0.98
+
+        # 경계 검사
+        self.check_boundaries()
+
+    def check_collisions(self):
+        """충돌 감지 및 처리"""
+        # 보물 충돌
+        for treasure in self.treasures[:]:
+            if self.distance(self.diver, treasure) < 20:
+                self.score += 10
+                self.treasures.remove(treasure)
+                self.spawn_treasure()
+
+        # 장애물 충돌
+        for obstacle in self.obstacles:
+            if self.distance(self.diver, obstacle) < 25:
+                self.lives -= 1
+                self.reset_diver_position()
+
+    def distance(self, obj1, obj2):
+        """두 객체 간의 거리 계산"""
+        return math.sqrt(
+            (obj1["x"] - obj2["x"]) ** 2 +
+            (obj1["y"] - obj2["y"]) ** 2
+        )
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 튜토리얼 탭 -->
+            <div id="tutorial-tab" class="tab-content hidden p-8">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">📚 단계별 튜토리얼</h3>
+                    <p class="text-gray-600">스크래치로 잠수 게임을 만드는 과정을 단계별로 배워보세요</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- 1단계 -->
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3">1</div>
+                            <h4 class="text-lg font-bold text-gray-800">캐릭터 설정</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 다이버 스프라이트 추가</li>
+                            <li>• 배경을 바다로 설정</li>
+                            <li>• 필요한 변수들 생성</li>
+                            <li>• 기본 움직임 구현</li>
+                        </ul>
+                    </div>
+
+                    <!-- 2단계 -->
+                    <div class="bg-green-50 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold mr-3">2</div>
+                            <h4 class="text-lg font-bold text-gray-800">물리 법칙</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 중력 효과 추가</li>
+                            <li>• 부력 시뮬레이션</li>
+                            <li>• 물의 저항 구현</li>
+                            <li>• 수면과 해저 경계 설정</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3단계 -->
+                    <div class="bg-yellow-50 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold mr-3">3</div>
+                            <h4 class="text-lg font-bold text-gray-800">게임 요소</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 보물 스프라이트 추가</li>
+                            <li>• 장애물 배치</li>
+                            <li>• 충돌 감지 시스템</li>
+                            <li>• 점수 및 생명 관리</li>
+                        </ul>
+                    </div>
+
+                    <!-- 4단계 -->
+                    <div class="bg-purple-50 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold mr-3">4</div>
+                            <h4 class="text-lg font-bold text-gray-800">게임 완성</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 타이머 기능 구현</li>
+                            <li>• 게임오버 조건</li>
+                            <li>• 사운드 효과 추가</li>
+                            <li>• UI 및 점수 표시</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="https://www.youtube.com/watch?v=Vb61-2u4xog" target="_blank" class="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                        <i class="fab fa-youtube mr-2"></i>
+                        SONOL의 잠수 게임 강의 보기
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 관련 프로젝트 -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🔗 관련 프로젝트</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <a href="project-sorting-algorithm.html" class="block bg-purple-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-sort-amount-up text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">정렬 알고리즘</h4>
+                    <p class="text-sm text-gray-600">시각적으로 배우는 정렬 방법들</p>
+                </a>
+
+                <a href="project-cat-care.html" class="block bg-pink-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-cat text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">고양이 케어 게임</h4>
+                    <p class="text-sm text-gray-600">가상 펫을 돌보는 시뮬레이션</p>
+                </a>
+
+                <a href="project-math-quiz.html" class="block bg-green-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calculator text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">수학 퀴즈 앱</h4>
+                    <p class="text-sm text-gray-600">수학 문제를 자동으로 생성하는 앱</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 CodeKids. 모든 권리 보유.</p>
+            <p class="text-gray-400 mt-2">초중등학생을 위한 코딩 교육 플랫폼</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/project-diving-game.js"></script>
+</body>
+</html>

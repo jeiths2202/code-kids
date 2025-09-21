@@ -1,0 +1,605 @@
+/* CodeKids - 반응형 디자인 최적화 */
+
+/* 모바일 우선 접근법 */
+@media screen and (max-width: 640px) {
+    /* 기본 모바일 스타일 */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* 히어로 섹션 모바일 최적화 */
+    .hero-title {
+        font-size: 2rem;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 2rem;
+    }
+    
+    /* 버튼 모바일 최적화 */
+    .hero-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .hero-buttons button {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* 통계 섹션 모바일 */
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .hero-stats div {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 1rem;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 기능 카드 모바일 */
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-card h4 {
+        font-size: 1.25rem;
+    }
+    
+    .feature-card p {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    /* 강의 카드 모바일 */
+    .course-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .course-card {
+        margin-bottom: 1rem;
+    }
+    
+    .course-card .course-image {
+        height: 8rem;
+    }
+    
+    .course-card .course-content {
+        padding: 1rem;
+    }
+    
+    /* 챌린지 섹션 모바일 */
+    .challenge-section {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .challenge-image {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+    }
+    
+    /* 프로젝트 갤러리 모바일 */
+    .project-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* 푸터 모바일 */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    /* 모달 모바일 최적화 */
+    .custom-modal .bg-white {
+        margin: 1rem;
+        max-width: none;
+        max-height: 90vh;
+        padding: 1.5rem;
+    }
+    
+    .modal-content {
+        font-size: 0.875rem;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-buttons button {
+        width: 100%;
+    }
+    
+    /* 네비게이션 모바일 */
+    .nav-desktop {
+        display: none;
+    }
+    
+    .nav-mobile {
+        display: block;
+    }
+    
+    /* 텍스트 크기 조정 */
+    .text-4xl {
+        font-size: 2rem;
+    }
+    
+    .text-3xl {
+        font-size: 1.75rem;
+    }
+    
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    
+    .text-xl {
+        font-size: 1.125rem;
+    }
+}
+
+/* 태블릿 최적화 */
+@media screen and (min-width: 641px) and (max-width: 1024px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    /* 히어로 섹션 태블릿 */
+    .hero-title {
+        font-size: 3rem;
+        line-height: 1.1;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+    
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    /* 통계 섹션 태블릿 */
+    .hero-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* 기능 카드 태블릿 */
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .feature-card:last-child {
+        grid-column: 1 / -1;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+    
+    /* 강의 카드 태블릿 */
+    .course-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .course-grid .course-card:last-child {
+        grid-column: 1 / -1;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+    
+    /* 챌린지 섹션 태블릿 */
+    .challenge-section {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 3rem;
+    }
+    
+    /* 프로젝트 갤러리 태블릿 */
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .project-grid .project-card:last-child {
+        grid-column: 1 / -1;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+    
+    /* 푸터 태블릿 */
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    /* 모달 태블릿 */
+    .custom-modal .bg-white {
+        max-width: 600px;
+        margin: 2rem;
+        padding: 2rem;
+    }
+}
+
+/* 데스크톱 최적화 */
+@media screen and (min-width: 1025px) {
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    /* 히어로 섹션 데스크톱 */
+    .hero-title {
+        font-size: 4rem;
+        line-height: 1.1;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        line-height: 1.5;
+    }
+    
+    /* 기능 카드 데스크톱 */
+    .feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    /* 강의 카드 데스크톱 */
+    .course-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    /* 챌린지 섹션 데스크톱 */
+    .challenge-section {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 4rem;
+    }
+    
+    /* 프로젝트 갤러리 데스크톱 */
+    .project-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    /* 푸터 데스크톱 */
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+    
+    /* 모달 데스크톱 */
+    .custom-modal .bg-white {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 3rem;
+    }
+    
+    /* 호버 효과 강화 */
+    .feature-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .course-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .project-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* 초대형 화면 최적화 */
+@media screen and (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+    }
+    
+    .hero-title {
+        font-size: 5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.75rem;
+    }
+    
+    .section-spacing {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}
+
+/* 세로 모드 모바일 최적화 */
+@media screen and (max-width: 640px) and (orientation: portrait) {
+    .hero-section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .hero-buttons {
+        position: sticky;
+        bottom: 2rem;
+        z-index: 10;
+    }
+    
+    .challenge-image {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* 가로 모드 모바일 최적화 */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+    .hero-section {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .feature-grid,
+    .course-grid,
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .challenge-section {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+}
+
+/* 프린트 최적화 */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    .hero-section {
+        page-break-inside: avoid;
+    }
+    
+    .feature-card,
+    .course-card,
+    .project-card {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+    
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+}
+
+/* 고대비 모드 */
+@media (prefers-contrast: high) {
+    .hero-section {
+        background: white;
+        color: black;
+    }
+    
+    .feature-card,
+    .course-card,
+    .project-card {
+        border: 2px solid black;
+        background: white;
+        color: black;
+    }
+    
+    .btn-primary {
+        background: black;
+        color: white;
+        border: 2px solid black;
+    }
+    
+    .btn-secondary {
+        background: white;
+        color: black;
+        border: 2px solid black;
+    }
+}
+
+/* 줄어든 모션 선호 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .parallax {
+        transform: none !important;
+    }
+}
+
+/* 터치 디바이스 최적화 */
+@media (hover: none) and (pointer: coarse) {
+    /* 터치 타겟 크기 최소 44px */
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* 호버 효과 제거 */
+    .feature-card:hover,
+    .course-card:hover,
+    .project-card:hover {
+        transform: none;
+    }
+    
+    /* 터치 피드백 */
+    button:active,
+    .course-card:active,
+    .project-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    /* 스크롤 스냅 */
+    .section-container {
+        scroll-snap-type: y mandatory;
+    }
+    
+    .section {
+        scroll-snap-align: start;
+    }
+}
+
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --border-color: #334155;
+    }
+    
+    body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    .hero-section {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    .feature-card,
+    .course-card,
+    .project-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+    
+    header {
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(10px);
+    }
+    
+    footer {
+        background: var(--bg-secondary);
+    }
+    
+    .custom-modal .bg-white {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+}
+
+/* 유틸리티 클래스 */
+.responsive-text-sm {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.responsive-text-base {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+}
+
+.responsive-text-lg {
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
+}
+
+.responsive-text-xl {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+.responsive-text-2xl {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.responsive-text-3xl {
+    font-size: clamp(1.875rem, 6vw, 2.5rem);
+}
+
+.responsive-text-4xl {
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+}
+
+/* 컨테이너 쿼리 지원 */
+@container (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@container (min-width: 601px) and (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@container (min-width: 901px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 스크롤바 반응형 */
+@media (max-width: 640px) {
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+}
+
+/* 키보드 네비게이션 */
+@media (hover: hover) {
+    .focus-visible {
+        outline: 2px solid #4F46E5;
+        outline-offset: 2px;
+    }
+}
