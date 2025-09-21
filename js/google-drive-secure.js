@@ -38,8 +38,16 @@ class GoogleDriveSecureAPI {
 
                 // CloudProjectManager에 업데이트
                 if (window.cloudProjectsManager) {
+                    console.log('📤 CloudProjectManager에 프로젝트 전달:', this.projects.length);
                     window.cloudProjectsManager.googleDriveProjects = this.projects;
+                    window.cloudProjectsManager.projects = [
+                        ...window.cloudProjectsManager.sampleProjects,
+                        ...this.projects
+                    ];
+                    window.cloudProjectsManager.filterProjects();
                     window.cloudProjectsManager.renderProjects();
+                } else {
+                    console.warn('⚠️ CloudProjectManager가 아직 로드되지 않음');
                 }
 
                 return this.projects;
@@ -148,11 +156,16 @@ class GoogleDriveSecureAPI {
                 console.log('✅ 프로젝트 자동 로드 완료');
 
                 if (window.cloudProjectsManager) {
-                    window.cloudProjectsManager.showNotification(
-                        `${this.projects.length}개의 프로젝트를 사용할 수 있습니다!`,
-                        'success'
-                    );
+                    // 약간의 지연 후 UI 업데이트 확인
+                    setTimeout(() => {
+                        window.cloudProjectsManager.showNotification(
+                            `Google Drive에서 ${this.projects.length}개의 프로젝트를 자동 로드했습니다!`,
+                            'success'
+                        );
+                    }, 500);
                 }
+            } else {
+                console.log('ℹ️ 로드된 프로젝트가 없음');
             }
         }, 1000);
     }

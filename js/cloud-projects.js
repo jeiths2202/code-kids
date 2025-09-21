@@ -312,23 +312,32 @@ class CloudProjectManager {
             if (window.googleDriveSecureAPI) {
                 console.log('✅ Google Drive Secure API 사용');
 
-                // 이미 프로젝트가 로드되어 있는지 확인
-                if (this.googleDriveProjects && this.googleDriveProjects.length > 0) {
-                    console.log('✅ 이미 로드된 프로젝트 사용');
-                    this.showNotification('Google Drive 프로젝트가 이미 로드되어 있습니다! 🎉', 'success');
+                // Google Drive Secure API에서 이미 로드된 프로젝트가 있는지 확인
+                const secureAPI = window.googleDriveSecureAPI;
+
+                if (secureAPI.projects && secureAPI.projects.length > 0) {
+                    console.log('✅ Google Drive Secure API에서 기존 프로젝트 사용');
+                    this.googleDriveProjects = secureAPI.projects;
+                    this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+                    this.filterProjects();
+                    this.renderProjects();
+                    this.showNotification(`Google Drive에서 ${secureAPI.projects.length}개의 프로젝트를 불러왔습니다! 🎉`, 'success');
                     return;
                 }
 
                 // 새로 프로젝트 로드
-                const projects = await window.googleDriveSecureAPI.loadProjects();
+                console.log('🔄 새로 Google Drive 프로젝트 로드 시작');
+                const projects = await secureAPI.loadProjects();
 
                 if (projects && projects.length > 0) {
+                    console.log(`✅ ${projects.length}개의 새 프로젝트 로드 완료`);
                     this.googleDriveProjects = projects;
                     this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
                     this.filterProjects();
                     this.renderProjects();
                     this.showNotification(`Google Drive에서 ${projects.length}개의 프로젝트를 불러왔습니다! 🎉`, 'success');
                 } else {
+                    console.warn('⚠️ Google Drive에서 프로젝트를 찾을 수 없음');
                     this.showNotification('Google Drive에서 프로젝트를 찾을 수 없습니다.', 'info');
                 }
 
