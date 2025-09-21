@@ -2,7 +2,7 @@
 
 class GoogleAuth {
     constructor() {
-        this.clientId = '633114454750-pr7fjfh35kknv3ih56p4gni3darrd845.apps.googleusercontent.com'; // 실제 구글 클라이언트 ID로 교체 필요
+        this.clientId = process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID_HERE'; // 환경변수에서 로드
         this.isSignedIn = false;
         this.currentUser = null;
         this.isInitialized = false;
