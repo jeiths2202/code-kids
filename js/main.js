@@ -321,10 +321,11 @@ function createRippleEffect(event, element) {
 function handleButtonClick(buttonText) {
     switch(buttonText) {
         case '지금 시작하기':
-            showAlert('🎉 회원가입 페이지로 이동합니다!', 'success');
+            showEventPopup();
             break;
         case '체험해보기':
-            showDemoModal();
+            // 오늘의 코딩 챌린지로 스크롤
+            scrollToSection('practice');
             break;
         case '챌린지 도전하기':
             showAlert('🎯 로봇 미로 탈출 챌린지를 준비중입니다!', 'info');
@@ -694,16 +695,37 @@ function createMobileMenu() {
     menu.className = 'mobile-menu fixed top-16 left-0 right-0 bg-white shadow-lg transform -translate-y-full transition-transform z-40';
     menu.innerHTML = `
         <div class="p-4 space-y-4">
-            <a href="#courses" class="block py-2 text-gray-700 font-semibold">강의</a>
-            <a href="#practice" class="block py-2 text-gray-700 font-semibold">실습</a>
-            <a href="#projects" class="block py-2 text-gray-700 font-semibold">프로젝트</a>
-            <a href="#community" class="block py-2 text-gray-700 font-semibold">커뮤니티</a>
-            <hr>
-            <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">로그인</button>
+            <a href="#courses" class="block py-3 px-4 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-graduation-cap mr-3"></i>강의
+            </a>
+            <a href="#practice" class="block py-3 px-4 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-code mr-3"></i>오늘의 코딩 챌린지
+            </a>
+            <a href="#projects" class="block py-3 px-4 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-folder-open mr-3"></i>학생 작품
+            </a>
+            <a href="dashboard.html" class="block py-3 px-4 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-chart-line mr-3"></i>대시보드
+            </a>
+            <a href="editor.html" class="block py-3 px-4 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-laptop-code mr-3"></i>코딩 실험실
+            </a>
+            <hr class="my-4">
+            <button class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors" onclick="showEventPopup()">
+                <i class="fas fa-play mr-2"></i>지금 시작하기
+            </button>
         </div>
     `;
-    
+
     document.body.appendChild(menu);
+
+    // 메뉴 링크 클릭 시 메뉴 닫기
+    menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMobileMenu();
+        });
+    });
+
     return menu;
 }
 
@@ -779,6 +801,112 @@ function debounce(func, wait) {
 // 스크롤 이벤트 디바운싱
 const debouncedScrollHandler = debounce(handleScrollAnimations, 10);
 window.addEventListener('scroll', debouncedScrollHandler);
+
+// 이벤트 팝업 표시 (지금 시작하기 버튼용)
+function showEventPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'event-popup fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    popup.innerHTML = `
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl transform scale-100 transition-all duration-300">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">특별 이벤트!</h3>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                현재는 로그인 과정없이도 사용할 수 있는
+                <span class="font-semibold text-primary">기간한정 이벤트</span> 중입니다.
+                <br><br>
+                <span class="text-lg font-semibold text-secondary">코딩 실험실</span>에서 바로 시작해보세요!
+            </p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div class="bg-primary h-2 rounded-full transition-all duration-100" style="width: 0%" id="progress-bar"></div>
+            </div>
+            <p class="text-sm text-gray-500">잠시 후 자동으로 이동합니다...</p>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    // 애니메이션
+    setTimeout(() => popup.classList.add('animate-fadeIn'), 10);
+
+    // 프로그레스 바 애니메이션
+    const progressBar = popup.querySelector('#progress-bar');
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 2;
+        progressBar.style.width = progress + '%';
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            // 팝업 제거 후 editor.html로 이동
+            popup.classList.add('animate-fadeOut');
+            setTimeout(() => {
+                popup.remove();
+                window.location.href = '/editor.html';
+            }, 300);
+        }
+    }, 100); // 5초 = 100ms * 50
+
+    // 클릭으로 즉시 이동
+    popup.addEventListener('click', () => {
+        clearInterval(interval);
+        popup.remove();
+        window.location.href = '/editor.html';
+    });
+}
+
+// 섹션으로 스크롤 (체험해보기 버튼용)
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+
+        // 섹션 하이라이트 효과
+        section.classList.add('highlight-section');
+        setTimeout(() => {
+            section.classList.remove('highlight-section');
+        }, 2000);
+
+        showAlert('🎯 오늘의 코딩 챌린지로 이동했습니다!', 'success');
+    }
+}
+
+// 모바일 메뉴 토글 기능 개선
+function initializeMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (mobileMenuBtn && !mobileMenu) {
+        // 모바일 메뉴가 없다면 생성
+        createMobileMenu();
+    }
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+}
+
+// 모바일 메뉴 토글
+function toggleMobileMenu() {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const menuIcon = document.querySelector('#mobile-menu-btn i');
+
+    if (mobileMenu) {
+        const isVisible = mobileMenu.classList.contains('mobile-menu-visible');
+
+        if (isVisible) {
+            mobileMenu.classList.remove('mobile-menu-visible');
+            mobileMenu.style.transform = 'translateY(-100%)';
+            menuIcon.className = 'fas fa-bars text-xl';
+        } else {
+            mobileMenu.classList.add('mobile-menu-visible');
+            mobileMenu.style.transform = 'translateY(0)';
+            menuIcon.className = 'fas fa-times text-xl';
+        }
+    }
+}
 
 // 로그인 성공 메시지
 function showLoginSuccessMessage() {
