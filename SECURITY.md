@@ -14,6 +14,7 @@ cp .env.example .env
 2. `.env` 파일에 실제 값 입력:
 ```env
 GOOGLE_CLIENT_ID=your_actual_google_client_id
+GOOGLE_API_KEY=your_actual_google_api_key
 ```
 
 ### 배포 환경
@@ -21,6 +22,7 @@ GOOGLE_CLIENT_ID=your_actual_google_client_id
 #### Vercel 배포시
 ```bash
 vercel env add GOOGLE_CLIENT_ID
+vercel env add GOOGLE_API_KEY
 ```
 
 #### Netlify 배포시

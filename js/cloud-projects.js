@@ -10,6 +10,7 @@ class CloudProjectManager {
         this.currentCategory = 'all';
         this.projects = [];
         this.filteredProjects = [];
+        this.googleDriveProjects = [];
 
         this.init();
     }
@@ -72,9 +73,22 @@ class CloudProjectManager {
 
     // 샘플 프로젝트 데이터 로드
     async loadProjectsData() {
-        // 실제 구현시에는 서버에서 데이터를 가져옴
-        // 현재는 하드코딩된 샘플 데이터 사용
-        this.projects = [
+        // 기본 샘플 프로젝트 로드
+        await this.loadSampleProjects();
+
+        // Google Drive 프로젝트 로드 시도
+        await this.loadGoogleDriveProjects();
+
+        // 모든 프로젝트 통합
+        this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+
+        this.filterProjects();
+        this.renderProjects();
+    }
+
+    async loadSampleProjects() {
+        // 샘플 프로젝트 데이터
+        this.sampleProjects = [
             {
                 id: 'cloud_001',
                 title: 'Super Mario Vivacious',
@@ -257,8 +271,102 @@ class CloudProjectManager {
                 createdAt: '2024-02-10'
             }
         ];
+    }
 
-        this.filteredProjects = [...this.projects];
+    // Google Drive 프로젝트 로드
+    async loadGoogleDriveProjects() {
+        try {
+            console.log('📁 Google Drive 프로젝트 검색 중...');
+
+            // Google Drive API가 초기화되었는지 확인
+            if (!window.googleDriveAPI || !window.googleDriveAPI.isInitialized) {
+                console.log('⏳ Google Drive API 초기화 대기 중...');
+                return;
+            }
+
+            // 로그인 상태 확인
+            if (!window.googleDriveAPI.isSignedIn) {
+                console.log('🔐 Google Drive 로그인이 필요합니다');
+                this.googleDriveProjects = [];
+                return;
+            }
+
+            // Scratch 프로젝트 검색
+            const driveProjects = await window.googleDriveAPI.searchScratchProjects();
+            this.googleDriveProjects = driveProjects;
+
+            console.log(`✅ Google Drive에서 ${driveProjects.length}개 프로젝트를 발견했습니다`);
+
+        } catch (error) {
+            console.error('❌ Google Drive 프로젝트 로드 실패:', error);
+            this.googleDriveProjects = [];
+        }
+    }
+
+    // Google Drive 로그인 처리
+    async connectGoogleDrive() {
+        try {
+            console.log('🔐 Google Drive 연결 시도...');
+
+            // Google Drive API 초기화 대기
+            if (!window.googleDriveAPI) {
+                throw new Error('Google Drive API가 로드되지 않았습니다');
+            }
+
+            // 로그인 시도
+            const success = await window.googleDriveAPI.signIn();
+
+            if (success) {
+                console.log('✅ Google Drive 연결 성공');
+
+                // 프로젝트 재로드
+                await this.loadGoogleDriveProjects();
+                this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+                this.filterProjects();
+                this.renderProjects();
+
+                // 성공 알림
+                this.showNotification('Google Drive가 성공적으로 연결되었습니다! 🎉', 'success');
+            } else {
+                throw new Error('Google Drive 로그인에 실패했습니다');
+            }
+
+        } catch (error) {
+            console.error('❌ Google Drive 연결 실패:', error);
+            this.showNotification('Google Drive 연결에 실패했습니다. 다시 시도해주세요.', 'error');
+        }
+    }
+
+    // 알림 표시
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white max-w-sm transition-all duration-300 ${
+            type === 'success' ? 'bg-green-500' :
+            type === 'error' ? 'bg-red-500' :
+            'bg-blue-500'
+        }`;
+        notification.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <i class="fas ${
+                    type === 'success' ? 'fa-check-circle' :
+                    type === 'error' ? 'fa-exclamation-circle' :
+                    'fa-info-circle'
+                }"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // 3초 후 자동 제거
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 
     showCloudModal() {
@@ -371,21 +479,24 @@ class CloudProjectManager {
             game: 'from-purple-400 to-pink-400',
             animation: 'from-blue-400 to-cyan-400',
             education: 'from-green-400 to-emerald-400',
-            art: 'from-yellow-400 to-orange-400'
+            art: 'from-yellow-400 to-orange-400',
+            google_drive: 'from-blue-500 to-green-500'
         };
 
         const categoryLabels = {
             game: '게임',
             animation: '애니메이션',
             education: '교육',
-            art: '예술'
+            art: '예술',
+            google_drive: 'Google Drive'
         };
 
         const categoryIcons = {
             game: 'fa-gamepad',
             animation: 'fa-film',
             education: 'fa-graduation-cap',
-            art: 'fa-palette'
+            art: 'fa-palette',
+            google_drive: 'fab fa-google-drive'
         };
 
         const difficultyColors = {
@@ -405,6 +516,7 @@ class CloudProjectManager {
                 <div class="aspect-video bg-gradient-to-br ${categoryColors[project.category]} flex items-center justify-center relative">
                     <i class="fas ${categoryIcons[project.category]} text-white text-4xl"></i>
                     ${project.isLargeFile ? '<div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">📦 대용량</div>' : ''}
+                    ${project.source === 'google_drive' ? '<div class="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded flex items-center"><i class="fab fa-google-drive mr-1"></i>Drive</div>' : ''}
                 </div>
                 <div class="p-4">
                     <h4 class="font-semibold text-gray-800 mb-1">${project.title}</h4>
@@ -439,19 +551,38 @@ class CloudProjectManager {
         this.showLoading();
 
         try {
-            // 실제 파일 경로 설정
-            const projectUrl = `${window.location.origin}${project.filePath}`;
+            let file = null;
 
-            console.log('프로젝트 파일 URL:', projectUrl);
+            // Google Drive 프로젝트인지 확인
+            if (project.source === 'google_drive' && project.driveFileId) {
+                console.log('📁 Google Drive 파일 다운로드:', project.title);
 
-            // 파일 다운로드 시도
-            const response = await fetch(projectUrl);
+                // Google Drive API로 파일 다운로드
+                file = await window.googleDriveAPI.downloadFile(
+                    project.driveFileId,
+                    `${project.title}.sb3`
+                );
 
-            if (!response.ok) {
-                // 파일이 없으면 데모 프로젝트로 대체
-                console.log(`파일을 찾을 수 없습니다 (${response.status}). 데모 모드로 전환합니다.`);
-                this.loadDemoProject(project);
-                return;
+                console.log('✅ Google Drive 파일 다운로드 완료');
+
+            } else {
+                // 로컬 파일 처리
+                const projectUrl = `${window.location.origin}${project.filePath}`;
+                console.log('프로젝트 파일 URL:', projectUrl);
+
+                const response = await fetch(projectUrl);
+
+                if (!response.ok) {
+                    console.log(`파일을 찾을 수 없습니다 (${response.status}). 데모 모드로 전환합니다.`);
+                    this.loadDemoProject(project);
+                    return;
+                }
+
+                // 응답을 File 객체로 변환
+                const arrayBuffer = await response.arrayBuffer();
+                file = new File([arrayBuffer], `${project.title}.sb3`, {
+                    type: 'application/x.scratch.sb3'
+                });
             }
 
             // Scratch 에디터에 프로젝트 로드
@@ -469,10 +600,6 @@ class CloudProjectManager {
 
                 window.codekidsEditor.unsavedChanges = true;
                 window.codekidsEditor.updateUI();
-
-                // 파일 다운로드
-                const blob = await response.blob();
-                const file = new File([blob], `${project.title}.sb3`, { type: 'application/x.scratch.sb3' });
 
                 console.log(`파일 로드 성공: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 

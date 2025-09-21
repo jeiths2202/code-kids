@@ -266,12 +266,21 @@
 
             <!-- 카테고리 필터 -->
             <div class="mb-6">
-                <div class="flex items-center space-x-4 mb-4">
-                    <button class="cloud-filter-btn active px-4 py-2 bg-purple-500 text-white rounded-lg" data-category="all">전체</button>
-                    <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="game">게임</button>
-                    <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="animation">애니메이션</button>
-                    <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="education">교육</button>
-                    <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="art">예술</button>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4">
+                        <button class="cloud-filter-btn active px-4 py-2 bg-purple-500 text-white rounded-lg" data-category="all">전체</button>
+                        <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="game">게임</button>
+                        <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="animation">애니메이션</button>
+                        <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="education">교육</button>
+                        <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="art">예술</button>
+                        <button class="cloud-filter-btn px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg" data-category="google_drive">
+                            <i class="fab fa-google-drive mr-1"></i>내 Drive
+                        </button>
+                    </div>
+                    <button id="connect-google-drive-btn" onclick="cloudProjects.connectGoogleDrive()" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fab fa-google-drive"></i>
+                        <span>Google Drive 연결</span>
+                    </button>
                 </div>
 
                 <div class="flex space-x-4">
@@ -324,6 +333,7 @@
     <!-- CodeKids 통합 스크립트 -->
     <script src="js/auth.js"></script>
     <script src="js/scratch-api.js"></script>
+    <script src="js/google-drive-api.js"></script>
     <script src="js/scratch-integration.js"></script>
     <script src="js/cloud-projects.js"></script>
 </body>
