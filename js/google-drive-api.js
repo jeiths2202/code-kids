@@ -1,10 +1,14 @@
 // Google Drive API 연동 클래스
 class GoogleDriveAPI {
     constructor() {
-        this.clientId = process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID_HERE';
+        this.clientId = process.env.GOOGLE_CLIENT_ID || '129459484885-49jhhorvjq9cbd1nhjnf4qlrslqchdj7.apps.googleusercontent.com';
         this.apiKey = process.env.GOOGLE_API_KEY || 'YOUR_GOOGLE_API_KEY_HERE';
         this.discoveryDoc = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
         this.scopes = 'https://www.googleapis.com/auth/drive.readonly';
+
+        // 허용된 특정 폴더 ID (CodeKids 전용)
+        this.allowedFolderId = '1rEMeET9wqGR2Ky-fefFm6BumbXsRBi77';
+        this.folderName = 'CodeKids Scratch Projects';
 
         this.gapi = null;
         this.isInitialized = false;
@@ -96,25 +100,49 @@ class GoogleDriveAPI {
         }
     }
 
-    // Scratch 프로젝트 파일 검색
+    // Scratch 프로젝트 파일 검색 (특정 폴더 내에서만)
     async searchScratchProjects() {
         try {
             if (!this.isSignedIn) {
                 throw new Error('Google Drive에 로그인이 필요합니다');
             }
 
-            console.log('🔍 Google Drive에서 Scratch 프로젝트 검색 중...');
+            console.log(`🔍 ${this.folderName} 폴더에서 Scratch 프로젝트 검색 중...`);
+
+            // 먼저 허용된 폴더에 접근 권한이 있는지 확인
+            try {
+                await this.gapi.client.drive.files.get({
+                    fileId: this.allowedFolderId,
+                    fields: 'name, id'
+                });
+                console.log('✅ CodeKids 전용 폴더 접근 권한 확인됨');
+            } catch (error) {
+                throw new Error('CodeKids 전용 폴더에 접근할 수 없습니다. 폴더 공유 설정을 확인해주세요.');
+            }
+
+            // 특정 폴더 내에서만 Scratch 파일 검색
+            const query = `'${this.allowedFolderId}' in parents and (name contains '.sb3' or name contains '.sb2' or name contains '.sb') and trashed=false`;
 
             const response = await this.gapi.client.drive.files.list({
-                q: "name contains '.sb3' or name contains '.sb2' or name contains '.sb'",
+                q: query,
                 pageSize: 50,
-                fields: 'nextPageToken, files(id, name, size, modifiedTime, webViewLink, thumbnailLink, description)'
+                fields: 'nextPageToken, files(id, name, size, modifiedTime, webViewLink, thumbnailLink, description, parents)',
+                orderBy: 'modifiedTime desc'
             });
 
             const files = response.result.files || [];
-            console.log(`📁 발견된 Scratch 파일: ${files.length}개`);
+            console.log(`📁 ${this.folderName}에서 발견된 Scratch 파일: ${files.length}개`);
 
-            return files.map(file => this.formatScratchProject(file));
+            // 폴더 ID 검증 (추가 보안)
+            const validFiles = files.filter(file =>
+                file.parents && file.parents.includes(this.allowedFolderId)
+            );
+
+            if (validFiles.length !== files.length) {
+                console.warn('⚠️ 일부 파일이 허용된 폴더 외부에 있어 제외되었습니다.');
+            }
+
+            return validFiles.map(file => this.formatScratchProject(file));
 
         } catch (error) {
             console.error('❌ Scratch 프로젝트 검색 실패:', error);
@@ -132,10 +160,10 @@ class GoogleDriveAPI {
         return {
             id: `gdrive_${file.id}`,
             title: file.name.replace(/\.(sb3|sb2|sb)$/, ''),
-            description: file.description || 'Google Drive에서 가져온 Scratch 프로젝트',
+            description: file.description || `CodeKids 전용 폴더의 Scratch 프로젝트`,
             category: 'google_drive',
             difficulty: '사용자 프로젝트',
-            author: '나의 Google Drive',
+            author: 'CodeKids Drive',
             rating: 0,
             downloads: 0,
             fileSize: fileSize,
@@ -143,16 +171,29 @@ class GoogleDriveAPI {
             filePath: null, // Google Drive는 직접 URL 사용
             driveFileId: file.id,
             webViewLink: file.webViewLink,
-            tags: ['Google Drive', 'Scratch', '내 프로젝트'],
+            tags: ['CodeKids', 'Scratch', '전용 폴더'],
             createdAt: createdDate,
-            source: 'google_drive'
+            source: 'google_drive',
+            folderRestricted: true // 폴더 제한 표시
         };
     }
 
-    // Google Drive 파일 다운로드
+    // Google Drive 파일 다운로드 (보안 검증 포함)
     async downloadFile(fileId, fileName) {
         try {
             console.log('📥 Google Drive 파일 다운로드:', fileName);
+
+            // 보안 검증: 파일이 허용된 폴더에 있는지 확인
+            const fileInfo = await this.gapi.client.drive.files.get({
+                fileId: fileId,
+                fields: 'parents, name'
+            });
+
+            if (!fileInfo.result.parents || !fileInfo.result.parents.includes(this.allowedFolderId)) {
+                throw new Error('보안 위반: 허용되지 않은 폴더의 파일입니다.');
+            }
+
+            console.log('✅ 파일 보안 검증 완료:', fileInfo.result.name);
 
             const response = await this.gapi.client.drive.files.get({
                 fileId: fileId,
