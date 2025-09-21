@@ -636,23 +636,10 @@ class CloudProjectManager {
                 }
 
             } else {
-                // 로컬 파일 처리
-                const projectUrl = `${window.location.origin}${project.filePath}`;
-                console.log('프로젝트 파일 URL:', projectUrl);
-
-                const response = await fetch(projectUrl);
-
-                if (!response.ok) {
-                    console.log(`파일을 찾을 수 없습니다 (${response.status}). 데모 모드로 전환합니다.`);
-                    this.loadDemoProject(project);
-                    return;
-                }
-
-                // 응답을 File 객체로 변환
-                const arrayBuffer = await response.arrayBuffer();
-                file = new File([arrayBuffer], `${project.title}.sb3`, {
-                    type: 'application/x.scratch.sb3'
-                });
+                // 샘플 프로젝트는 데모 모드로 처리
+                console.log('📦 샘플 프로젝트 선택됨, 데모 모드로 전환:', project.title);
+                this.loadDemoProject(project);
+                return;
             }
 
             // 모바일/데스크톱 모두 지원하는 방식으로 프로젝트 로드
@@ -667,31 +654,76 @@ class CloudProjectManager {
     }
 
     loadDemoProject(project) {
-        // 데모 모드: 프로젝트 정보만 표시
-        if (window.codekidsEditor) {
-            window.codekidsEditor.currentProject = {
-                id: null,
-                title: `${project.title} (데모)`,
-                technology: 'Scratch',
-                status: '진행중',
-                description: project.description,
-                cloud_source: project.id,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            };
+        // 샘플 프로젝트 - 새로운 빈 프로젝트로 시작하도록 안내
+        console.log('🎯 샘플 프로젝트 데모 모드:', project.title);
 
-            window.codekidsEditor.unsavedChanges = true;
-            window.codekidsEditor.updateUI();
-
-            if (window.codekidsEditor.api) {
-                window.codekidsEditor.api.showNotification(
-                    `"${project.title}" 프로젝트를 준비했습니다. 실제 파일은 서버 설정 후 사용 가능합니다. 📦`,
-                    'info'
-                );
-            }
-        }
+        // 사용자에게 친화적인 안내 메시지
+        this.showDemoProjectGuide(project);
 
         this.closeModal();
+    }
+
+    // 샘플 프로젝트 가이드 표시
+    showDemoProjectGuide(project) {
+        const guideHTML = `
+            <div class="demo-guide-overlay" style="
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.8); z-index: 10000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 20px; box-sizing: border-box;
+            ">
+                <div class="demo-guide-content" style="
+                    background: white; border-radius: 12px; padding: 24px;
+                    max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    font-family: 'Noto Sans KR', sans-serif;
+                ">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 8px;">🎮</div>
+                        <h3 style="color: #4F46E5; margin: 0 0 8px 0; font-size: 20px;">
+                            ${project.title}
+                        </h3>
+                        <p style="color: #666; margin: 0; font-size: 14px;">
+                            샘플 프로젝트 안내
+                        </p>
+                    </div>
+
+                    <div style="text-align: left; margin-bottom: 24px; background: #F8F9FA; padding: 16px; border-radius: 8px;">
+                        <p style="margin: 0 0 12px 0; color: #495057; font-size: 14px; line-height: 1.5;">
+                            <strong>${project.title}</strong>는 학습 참고용 샘플 프로젝트입니다.
+                        </p>
+                        <p style="margin: 0 0 12px 0; color: #495057; font-size: 14px; line-height: 1.5;">
+                            💡 <strong>추천:</strong> 이 아이디어를 참고하여 나만의 프로젝트를 새로 만들어보세요!
+                        </p>
+                        <p style="margin: 0; color: #6C757D; font-size: 13px; line-height: 1.4;">
+                            ${project.description}
+                        </p>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button onclick="window.open('https://sheeptester.github.io/scratch-gui/', '_blank')" style="
+                            flex: 1; background: #4F46E5; color: white; border: none;
+                            padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer;
+                        ">
+                            새 프로젝트 시작
+                        </button>
+                        <button onclick="this.closest('.demo-guide-overlay').remove()" style="
+                            flex: 1; background: #E5E7EB; color: #374151; border: none;
+                            padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer;
+                        ">
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', guideHTML);
+
+        // 5초 후 자동 닫기
+        setTimeout(() => {
+            const overlay = document.querySelector('.demo-guide-overlay');
+            if (overlay) overlay.remove();
+        }, 8000);
     }
 
     showLoading() {
