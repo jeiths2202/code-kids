@@ -315,13 +315,37 @@ class CloudProjectManager {
                 // Google Drive Secure API에서 이미 로드된 프로젝트가 있는지 확인
                 const secureAPI = window.googleDriveSecureAPI;
 
+                console.log('🔍 Google Drive Secure API 프로젝트 상태:', {
+                    hasProjects: !!(secureAPI.projects),
+                    projectCount: secureAPI.projects ? secureAPI.projects.length : 0,
+                    projects: secureAPI.projects
+                });
+
                 if (secureAPI.projects && secureAPI.projects.length > 0) {
                     console.log('✅ Google Drive Secure API에서 기존 프로젝트 사용');
                     this.googleDriveProjects = secureAPI.projects;
                     this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+
+                    console.log('🔍 최종 프로젝트 배열:', {
+                        sampleCount: this.sampleProjects.length,
+                        googleDriveCount: this.googleDriveProjects.length,
+                        totalCount: this.projects.length
+                    });
+
                     this.filterProjects();
                     this.renderProjects();
                     this.showNotification(`Google Drive에서 ${secureAPI.projects.length}개의 프로젝트를 불러왔습니다! 🎉`, 'success');
+                    return;
+                }
+
+                // Google Drive Secure API가 아직 로딩 중일 수 있으므로 잠시 대기 후 재시도
+                if (secureAPI.isLoading) {
+                    console.log('⏳ Google Drive API 로딩 중, 잠시 대기...');
+
+                    // 2초 대기 후 재시도
+                    setTimeout(async () => {
+                        await this.connectGoogleDrive();
+                    }, 2000);
                     return;
                 }
 
@@ -333,6 +357,13 @@ class CloudProjectManager {
                     console.log(`✅ ${projects.length}개의 새 프로젝트 로드 완료`);
                     this.googleDriveProjects = projects;
                     this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+
+                    console.log('🔍 새로 로드된 최종 프로젝트 배열:', {
+                        sampleCount: this.sampleProjects.length,
+                        googleDriveCount: this.googleDriveProjects.length,
+                        totalCount: this.projects.length
+                    });
+
                     this.filterProjects();
                     this.renderProjects();
                     this.showNotification(`Google Drive에서 ${projects.length}개의 프로젝트를 불러왔습니다! 🎉`, 'success');
@@ -586,13 +617,23 @@ class CloudProjectManager {
             if (project.source === 'google_drive' && project.driveFileId) {
                 console.log('📁 Google Drive 파일 다운로드:', project.title);
 
-                // Google Drive API로 파일 다운로드
-                file = await window.googleDriveAPI.downloadFile(
-                    project.driveFileId,
-                    `${project.title}.sb3`
-                );
-
-                console.log('✅ Google Drive 파일 다운로드 완료');
+                // Google Drive Secure API로 파일 다운로드
+                if (window.googleDriveSecureAPI) {
+                    file = await window.googleDriveSecureAPI.downloadFile(
+                        project.driveFileId,
+                        `${project.title}.sb3`
+                    );
+                    console.log('✅ Google Drive Secure API로 파일 다운로드 완료');
+                } else if (window.googleDriveAPI) {
+                    // 폴백: 기존 API 사용
+                    file = await window.googleDriveAPI.downloadFile(
+                        project.driveFileId,
+                        `${project.title}.sb3`
+                    );
+                    console.log('✅ Google Drive API로 파일 다운로드 완료');
+                } else {
+                    throw new Error('Google Drive API가 로드되지 않았습니다');
+                }
 
             } else {
                 // 로컬 파일 처리
