@@ -23,7 +23,7 @@
 - 폴더 제한 접근 제어
 
 ### 외부 서비스
-- TurboWarp (고성능 Scratch 에디터)
+- SheepTester Scratch GUI (안정적인 Scratch 에디터)
 - Scratch.mit.edu (공식 Scratch 에디터)
 - Google Drive API v3
 
@@ -36,7 +36,7 @@ Vercel Frontend (정적 파일 호스팅)
     ↓
 Google Drive API (서버리스 함수를 통한 보안 접근)
     ↓
-외부 Scratch GUI (TurboWarp/Scratch.mit.edu)
+외부 Scratch GUI (SheepTester/Scratch.mit.edu)
 ```
 
 ### 🔄 프로젝트 로드 플로우
@@ -45,7 +45,7 @@ Google Drive API (서버리스 함수를 통한 보안 접근)
 2. **파일 다운로드**: 브라우저에 .sb3 파일 자동 다운로드
 3. **디바이스별 안내**:
    - 📱 **모바일**: 단계별 가이드 모달 표시
-   - 🖥️ **데스크톱**: TurboWarp 자동 열기 + 안내
+   - 🖥️ **데스크톱**: Scratch 에디터 자동 열기 + 안내
 4. **수동 로드**: 사용자가 Scratch GUI에서 "파일에서 로드" 클릭
 
 ## 🎯 프로젝트 개요

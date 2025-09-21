@@ -690,12 +690,12 @@ class CodeKidsScratchEditor {
         // 외부 Scratch GUI 직접 사용 (연결 테스트 불필요)
         const externalScratchURLs = [
             'https://scratch.mit.edu/projects/editor/',           // 공식 MIT Scratch
-            'https://turbowarp.org/editor',                      // TurboWarp (고성능)
-            'https://sheeptester.github.io/scratch-gui/',        // GitHub Pages 호스팅
-            'https://scratch-gui.vercel.app/'                    // Vercel 호스팅
+            'https://sheeptester.github.io/scratch-gui/',        // GitHub Pages 호스팅 (안정적)
+            'https://scratch-gui.vercel.app/',                   // Vercel 호스팅
+            'https://editor.scratch-learn.org/'                 // 교육용 Scratch 에디터
         ];
 
-        // TurboWarp 사용 (빠르고 안정적, 호환성 좋음)
+        // SheepTester의 Scratch GUI 사용 (안정적이고 임베딩 친화적)
         const primaryScratchURL = externalScratchURLs[1];
 
         console.log('🌐 외부 Scratch GUI 사용:', primaryScratchURL);

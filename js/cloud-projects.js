@@ -749,11 +749,11 @@ class CloudProjectManager {
 
         // 2. Scratch GUI 자동 열기
         setTimeout(() => {
-            const scratchURL = 'https://turbowarp.org/editor';
+            const scratchURL = 'https://sheeptester.github.io/scratch-gui/';
             window.open(scratchURL, '_blank');
 
             // 안내 메시지
-            this.showNotification('💡 TurboWarp가 열렸습니다. "파일" → "컴퓨터에서 로드"를 클릭하여 다운로드된 파일을 선택하세요!', 'info');
+            this.showNotification('💡 Scratch 에디터가 열렸습니다. "파일" → "컴퓨터에서 로드"를 클릭하여 다운로드된 파일을 선택하세요!', 'info');
         }, 1500);
     }
 
@@ -792,10 +792,10 @@ class CloudProjectManager {
 
                         <div style="margin-bottom: 16px; padding: 12px; background: #F3F4F6; border-radius: 8px;">
                             <div style="font-weight: bold; color: #1F2937; margin-bottom: 4px;">
-                                2️⃣ Scratch 앱 열기
+                                2️⃣ Scratch 에디터 열기
                             </div>
                             <div style="font-size: 13px; color: #6B7280;">
-                                TurboWarp나 Scratch 앱을 설치하거나 웹에서 접속하세요.
+                                아래 버튼을 눌러 Scratch 에디터를 여세요.
                             </div>
                         </div>
 
@@ -810,11 +810,11 @@ class CloudProjectManager {
                     </div>
 
                     <div style="display: flex; gap: 12px;">
-                        <button onclick="window.open('https://turbowarp.org/editor', '_blank')" style="
+                        <button onclick="window.open('https://sheeptester.github.io/scratch-gui/', '_blank')" style="
                             flex: 1; background: #4F46E5; color: white; border: none;
                             padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer;
                         ">
-                            TurboWarp 열기
+                            Scratch 열기
                         </button>
                         <button onclick="this.closest('.mobile-guide-overlay').remove()" style="
                             flex: 1; background: #E5E7EB; color: #374151; border: none;
