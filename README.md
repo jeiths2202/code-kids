@@ -1,7 +1,38 @@
-# CodeKids - 초중등학생을 위한 코딩 학습 플랫폼
+# CodeKids 교육 플랫폼
 
-> **초중등학생 대상의 게임형 코딩 교육 웹 애플리케이션**  
-> Legacy 시스템의 DX화 경험을 바탕으로 설계된 현대적인 교육 플랫폼
+한국 학생들을 위한 코딩 교육 플랫폼입니다. Scratch 블록 코딩부터 Python, 웹 개발까지 단계별 학습을 제공합니다.
+
+## 🌟 주요 기능
+
+- **Scratch 프로그래밍**: 드래그 앤 드롭 블록 코딩 (Google Cloud 34.69.106.118:3000)
+- **Google Drive 연동**: 프로젝트 저장 및 공유 (폴더 제한 보안)
+- **실시간 대시보드**: 학습 진도 및 성과 분석
+- **프로젝트 갤러리**: 학생 작품 공유 및 다운로드
+
+## 🚀 기술 스택
+
+### 프론트엔드 (Vercel)
+- HTML5, CSS3, JavaScript (ES6+)
+- Tailwind CSS
+- Chart.js for 데이터 시각화
+- Font Awesome 아이콘
+
+### 백엔드 (Google Cloud)
+- Scratch GUI (Node.js + Webpack)
+- Google Drive API 연동
+- PM2 프로세스 관리
+
+## 🏗️ 아키텍처
+
+```
+학생 브라우저
+    ↓
+Vercel Frontend (새로운 배포)
+    ↓
+Google Cloud Server (34.69.106.118:3000)
+    ↓
+Google Drive API (폴더 ID: 1rEMeET9wqGR2Ky-fefFm6BumbXsRBi77)
+```
 
 ## 🎯 프로젝트 개요
 

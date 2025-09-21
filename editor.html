@@ -261,7 +261,7 @@
                     <i class="fas fa-cloud mr-2 text-purple-500"></i>
                     클라우드 프로젝트 갤러리
                 </h3>
-                <button onclick="cloudProjects.closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button onclick="window.cloudProjectsManager.closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
 
             <!-- 카테고리 필터 -->
@@ -282,7 +282,7 @@
                             <div>📁 CodeKids 전용 폴더</div>
                             <div>보안 연결</div>
                         </div>
-                        <button id="connect-google-drive-btn" onclick="cloudProjects.connectGoogleDrive()" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <button id="connect-google-drive-btn" onclick="window.cloudProjectsManager.connectGoogleDrive()" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                             <i class="fab fa-google-drive"></i>
                             <span>Google Drive 연결</span>
                         </button>
@@ -337,9 +337,9 @@
     </div>
 
     <!-- CodeKids 통합 스크립트 -->
-    <script src="js/auth.js"></script>
     <script src="js/scratch-api.js"></script>
-    <script src="js/google-drive-api.js"></script>
+    <!-- Google Drive Secure API - 민감한 정보가 서버에서 처리됨 -->
+    <script src="js/google-drive-secure.js"></script>
     <script src="js/scratch-integration.js"></script>
     <script src="js/cloud-projects.js"></script>
 </body>

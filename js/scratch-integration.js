@@ -647,24 +647,59 @@ class CodeKidsScratchEditor {
     // =====================
     
     checkScratchGUIAvailability() {
-        // 실제 Scratch GUI가 구현되어 있는지 확인
-        const scratchURL = 'http://localhost:8601'; // Scratch 개발 서버 (실제 실행 중인 포트)
+        // 환경에 따라 Scratch GUI URL 결정
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const localScratchURL = 'http://localhost:8601';
+
+        // Google Cloud 서버에 배포된 Scratch GUI
+        const cloudScratchURL = 'http://34.69.106.118:3000';
+
+        // 폴백 URL (현재는 공개 Scratch GUI)
+        const fallbackScratchURL = 'https://scratch-gui.vercel.app/';
 
         console.log('🔍 Scratch GUI 서버 연결 확인 중...');
 
-        fetch(scratchURL)
+        if (isLocalhost) {
+            // 로컬 개발환경: localhost:8601 시도
+            fetch(localScratchURL)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ 로컬 Scratch GUI 서버 연결 성공!');
+                        this.enableScratchGUI(localScratchURL);
+                    } else {
+                        console.warn('⚠️ 로컬 서버 실패, Cloud Run 시도');
+                        this.tryCloudRunGUI();
+                    }
+                })
+                .catch(error => {
+                    console.warn('❌ 로컬 Scratch GUI 서버 연결 실패, Cloud Run 시도:', error.message);
+                    this.tryCloudRunGUI();
+                });
+        } else {
+            // 배포환경: Google Cloud Run 우선 시도
+            console.log('🌐 배포 환경: Google Cloud Run Scratch GUI 시도');
+            this.tryCloudRunGUI();
+        }
+    }
+
+    // Google Cloud Run GUI 연결 시도
+    tryCloudRunGUI() {
+        const cloudScratchURL = 'http://34.69.106.118:3000';
+        const fallbackScratchURL = 'https://scratch-gui.vercel.app/';
+
+        fetch(cloudScratchURL)
             .then(response => {
                 if (response.ok) {
-                    console.log('✅ Scratch GUI 서버 연결 성공!');
-                    this.enableScratchGUI(scratchURL);
+                    console.log('✅ Google Cloud Run Scratch GUI 연결 성공!');
+                    this.enableScratchGUI(cloudScratchURL);
                 } else {
-                    console.warn('⚠️ Scratch GUI 서버 응답 오류:', response.status);
-                    this.showScratchPlaceholder();
+                    console.warn('⚠️ Cloud Run 실패, 폴백 GUI 사용');
+                    this.enableScratchGUI(fallbackScratchURL);
                 }
             })
             .catch(error => {
-                console.warn('❌ Scratch GUI 서버 연결 실패:', error.message);
-                this.showScratchPlaceholder();
+                console.warn('❌ Cloud Run 연결 실패, 폴백 GUI 사용:', error.message);
+                this.enableScratchGUI(fallbackScratchURL);
             });
     }
     
@@ -685,6 +720,9 @@ class CodeKidsScratchEditor {
 
                 // 프로젝트 상태 업데이트
                 this.updateProjectStatus('connected', '연결됨');
+
+                // AudioContext 초기화 (사용자 상호작용 후)
+                this.setupAudioContextOnUserInteraction();
 
                 if (this.api) {
                     this.api.showNotification('Scratch 에디터가 연결되었어요! 🎉', 'success');
@@ -1718,17 +1756,58 @@ class CodeKidsScratchEditor {
     // 정리 및 해제
     // =====================
     
+    setupAudioContextOnUserInteraction() {
+        // AudioContext 경고 방지를 위한 사용자 상호작용 대기
+        let audioContextSetup = false;
+        const setupAudio = () => {
+            if (!audioContextSetup) {
+                audioContextSetup = true;
+                try {
+                    // AudioContext가 있다면 resume 시도
+                    if (window.AudioContext || window.webkitAudioContext) {
+                        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        if (audioContext.state === 'suspended') {
+                            audioContext.resume().catch(err => {
+                                console.log('AudioContext resume failed:', err);
+                            });
+                        }
+                    }
+                    // iframe 내부의 AudioContext도 처리
+                    const iframe = document.getElementById('scratch-iframe');
+                    if (iframe && iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({type: 'enableAudio'}, '*');
+                        } catch (e) {
+                            // Cross-origin 접근 제한 시 무시
+                        }
+                    }
+                } catch (e) {
+                    console.log('AudioContext setup skipped:', e.message);
+                }
+                // 이벤트 리스너 제거
+                document.removeEventListener('click', setupAudio);
+                document.removeEventListener('keydown', setupAudio);
+                document.removeEventListener('touchstart', setupAudio);
+            }
+        };
+
+        // 사용자 상호작용 이벤트에 리스너 등록
+        document.addEventListener('click', setupAudio, { once: true });
+        document.addEventListener('keydown', setupAudio, { once: true });
+        document.addEventListener('touchstart', setupAudio, { once: true });
+    }
+
     destroy() {
         // 자동 저장 정리
         if (this.autoSaveInterval) {
             clearInterval(this.autoSaveInterval);
         }
-        
+
         // 현재 프로젝트 ID 저장
         if (this.currentProject) {
             localStorage.setItem('last_project_id', this.currentProject.id);
         }
-        
+
         console.log('CodeKids Scratch Editor 정리 완료');
     }
 }

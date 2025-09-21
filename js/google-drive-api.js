@@ -1,8 +1,7 @@
 // Google Drive API 연동 클래스
 class GoogleDriveAPI {
     constructor() {
-        this.clientId = process.env.GOOGLE_CLIENT_ID || '129459484885-49jhhorvjq9cbd1nhjnf4qlrslqchdj7.apps.googleusercontent.com';
-        this.apiKey = process.env.GOOGLE_API_KEY || 'YOUR_GOOGLE_API_KEY_HERE';
+        this.clientId = '129459484885-49jhhorvjq9cbd1nhjnf4qlrslqchdj7.apps.googleusercontent.com';
         this.discoveryDoc = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
         this.scopes = 'https://www.googleapis.com/auth/drive.readonly';
 
@@ -26,19 +25,26 @@ class GoogleDriveAPI {
             await this.loadGoogleAPI();
 
             // GAPI 초기화
-            await this.gapi.load('auth2:client', async () => {
-                await this.gapi.client.init({
-                    apiKey: this.apiKey,
-                    clientId: this.clientId,
-                    discoveryDocs: [this.discoveryDoc],
-                    scope: this.scopes
+            await new Promise((resolve, reject) => {
+                this.gapi.load('auth2:client', async () => {
+                    try {
+                        await this.gapi.client.init({
+                            clientId: this.clientId,
+                            discoveryDocs: [this.discoveryDoc],
+                            scope: this.scopes,
+                            plugin_name: 'CodeKids Platform'
+                        });
+
+                        this.isInitialized = true;
+                        this.isSignedIn = this.gapi.auth2.getAuthInstance().isSignedIn.get();
+
+                        console.log('✅ Google Drive API 초기화 완료');
+                        console.log('🔐 로그인 상태:', this.isSignedIn);
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
                 });
-
-                this.isInitialized = true;
-                this.isSignedIn = this.gapi.auth2.getAuthInstance().isSignedIn.get();
-
-                console.log('✅ Google Drive API 초기화 완료');
-                console.log('🔐 로그인 상태:', this.isSignedIn);
             });
 
         } catch (error) {
@@ -69,21 +75,42 @@ class GoogleDriveAPI {
     // Google Drive 로그인
     async signIn() {
         try {
+            // API 초기화 대기
+            if (!this.isInitialized) {
+                console.log('⏳ API 초기화 완료까지 대기 중...');
+                await this.waitForInitialization();
+            }
+
             if (!this.isInitialized) {
                 throw new Error('Google Drive API가 초기화되지 않았습니다');
             }
 
             const authInstance = this.gapi.auth2.getAuthInstance();
-            await authInstance.signIn();
+            if (!authInstance) {
+                throw new Error('Google Auth 인스턴스를 찾을 수 없습니다');
+            }
 
-            this.isSignedIn = true;
-            console.log('✅ Google Drive 로그인 성공');
-
-            return true;
+            const user = await authInstance.signIn();
+            if (user && authInstance.isSignedIn.get()) {
+                this.isSignedIn = true;
+                console.log('✅ Google Drive 로그인 성공');
+                return true;
+            } else {
+                throw new Error('로그인이 취소되었거나 실패했습니다');
+            }
         } catch (error) {
             console.error('❌ Google Drive 로그인 실패:', error);
             return false;
         }
+    }
+
+    // API 초기화 완료까지 대기하는 헬퍼 메서드
+    async waitForInitialization(maxWait = 10000) {
+        const startTime = Date.now();
+        while (!this.isInitialized && (Date.now() - startTime) < maxWait) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        return this.isInitialized;
     }
 
     // Google Drive 로그아웃

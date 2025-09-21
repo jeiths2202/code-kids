@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Refresh Token 획득 (선생님 전용)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4285f4;
+            padding-bottom: 10px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #4285f4;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #4285f4;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #357ae8;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Google Refresh Token 획득</h1>
+
+        <div class="warning">
+            <strong>⚠️ 주의:</strong> 이 페이지는 선생님만 사용해야 합니다.<br>
+            Refresh Token은 서버에 한 번만 설정하면 학생들은 로그인 없이 사용할 수 있습니다.
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Google OAuth Playground 접속</h3>
+            <p>아래 링크를 클릭하여 Google OAuth 2.0 Playground에 접속하세요:</p>
+            <a href="https://developers.google.com/oauthplayground" target="_blank">
+                <button>OAuth Playground 열기</button>
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: 설정</h3>
+            <ol>
+                <li>오른쪽 상단 톱니바퀴(⚙️) 클릭</li>
+                <li><strong>"Use your own OAuth credentials"</strong> 체크</li>
+                <li>입력할 정보:
+                    <div class="code-block">
+OAuth Client ID: 129459484885-49jhhorvjq9cbd1nhjnf4qlrslqchdj7.apps.googleusercontent.com
+OAuth Client secret: (Google Cloud Console에서 확인)</div>
+                </li>
+            </ol>
+            <div class="warning">
+                <strong>⚠️ 중요:</strong> redirect_uri_mismatch 에러가 나면:<br>
+                Google Cloud Console → Credentials → OAuth 2.0 Client ID → Authorized redirect URIs에<br>
+                <code>https://developers.google.com/oauthplayground</code> 추가
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: 권한 선택</h3>
+            <ol>
+                <li>왼쪽 목록에서 <strong>"Drive API v3"</strong> 찾기</li>
+                <li><code>https://www.googleapis.com/auth/drive.readonly</code> 선택</li>
+                <li><strong>"Authorize APIs"</strong> 버튼 클릭</li>
+                <li>Google 계정으로 로그인 (shin.jeiths@gmail.com)</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Refresh Token 획득</h3>
+            <ol>
+                <li>인증 완료 후 <strong>"Exchange authorization code for tokens"</strong> 클릭</li>
+                <li>오른쪽에 표시된 <strong>Refresh token</strong> 복사</li>
+                <li>아래 형식으로 저장:
+                    <div class="code-block">Refresh token: 1//0xxxxxxxxxxxxx...</div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Vercel 환경변수 설정</h3>
+            <p>획득한 토큰들을 Vercel에 설정합니다:</p>
+            <div class="code-block">
+# Vercel Dashboard → Settings → Environment Variables
+
+GOOGLE_CLIENT_ID=129459484885-49jhhorvjq9cbd1nhjnf4qlrslqchdj7.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxx
+GOOGLE_REFRESH_TOKEN=1//0xxxxxxxxxxxxx...
+GOOGLE_DRIVE_FOLDER_ID=1rEMeET9wqGR2Ky-fefFm6BumbXsRBi77</div>
+
+            <p>또는 Vercel CLI 사용:</p>
+            <div class="code-block">
+vercel env add GOOGLE_REFRESH_TOKEN</div>
+        </div>
+
+        <div class="success">
+            <h3>✅ 설정 완료 후</h3>
+            <ul>
+                <li>서버가 자동으로 Google Drive에 접근</li>
+                <li>학생들은 로그인 없이 프로젝트 사용 가능</li>
+                <li>모든 API 키는 서버에서만 처리되어 안전</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="step">
+            <h3>🧪 테스트</h3>
+            <p>설정이 완료되면 아래 버튼으로 테스트할 수 있습니다:</p>
+            <button onclick="testAPI()">API 테스트</button>
+            <div id="test-result"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<p>테스트 중...</p>';
+
+            try {
+                const response = await fetch('/api/drive-files?action=list');
+                const data = await response.json();
+
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <strong>✅ 성공!</strong><br>
+                            ${data.files.length}개의 파일을 찾았습니다.
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <strong>❌ 실패:</strong><br>
+                        ${error.message}<br>
+                        <small>환경변수가 제대로 설정되었는지 확인하세요.</small>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

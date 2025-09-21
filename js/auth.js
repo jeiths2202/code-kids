@@ -2,7 +2,7 @@
 
 class GoogleAuth {
     constructor() {
-        this.clientId = process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID_HERE'; // 환경변수에서 로드
+        this.clientId = 'YOUR_GOOGLE_CLIENT_ID_HERE'; // 클라이언트에서는 하드코딩 (보안상 사용 안 함)
         this.isSignedIn = false;
         this.currentUser = null;
         this.isInitialized = false;

@@ -109,3 +109,12 @@ venv.bak/
 *.backup
 *.orig
 .vercel
+
+# Deployment scripts (contains sensitive info)
+deploy-scratch-gui.sh
+scratch-gui-setup.sh
+server-cors-config.js
+
+# SSH keys
+*.pem
+*.key

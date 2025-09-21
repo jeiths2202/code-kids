@@ -10,5 +10,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/drive-files.js": {
+      "maxDuration": 30
+    }
+  }
 }

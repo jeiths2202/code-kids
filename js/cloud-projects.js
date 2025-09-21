@@ -303,32 +303,54 @@ class CloudProjectManager {
         }
     }
 
-    // Google Drive 로그인 처리
+    // Google Drive 연결 처리 (학생 모드와 선생님 모드 통합)
     async connectGoogleDrive() {
         try {
             console.log('🔐 Google Drive 연결 시도...');
 
-            // Google Drive API 초기화 대기
-            if (!window.googleDriveAPI) {
-                throw new Error('Google Drive API가 로드되지 않았습니다');
-            }
+            // 새로운 Public API 사용
+            if (window.googleDrivePublicAPI) {
+                const api = window.googleDrivePublicAPI;
 
-            // 로그인 시도
-            const success = await window.googleDriveAPI.signIn();
+                // 이미 토큰이 있는지 확인
+                if (api.isPublicAccessReady()) {
+                    console.log('✅ 기존 토큰으로 접근');
+                    await api.loadGoogleDriveProjects();
+                    this.showNotification('Google Drive 프로젝트를 불러왔습니다! 🎉', 'success');
+                } else {
+                    console.log('🔑 선생님 인증 필요');
+                    const success = await api.authenticateTeacher();
 
-            if (success) {
-                console.log('✅ Google Drive 연결 성공');
+                    if (success) {
+                        console.log('✅ 인증 성공');
+                        this.showNotification('Google Drive가 연결되었습니다! 🎉', 'success');
+                    } else {
+                        throw new Error('인증에 실패했습니다');
+                    }
+                }
 
-                // 프로젝트 재로드
-                await this.loadGoogleDriveProjects();
+                // 프로젝트 목록 업데이트
+                this.googleDriveProjects = api.projects || [];
                 this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
                 this.filterProjects();
                 this.renderProjects();
 
-                // 성공 알림
-                this.showNotification('Google Drive가 성공적으로 연결되었습니다! 🎉', 'success');
+            } else if (window.googleDriveAPI) {
+                // 기존 API 폴백
+                const success = await window.googleDriveAPI.signIn();
+
+                if (success) {
+                    console.log('✅ Google Drive 연결 성공');
+                    await this.loadGoogleDriveProjects();
+                    this.projects = [...this.sampleProjects, ...this.googleDriveProjects];
+                    this.filterProjects();
+                    this.renderProjects();
+                    this.showNotification('Google Drive가 성공적으로 연결되었습니다! 🎉', 'success');
+                } else {
+                    throw new Error('Google Drive 로그인에 실패했습니다');
+                }
             } else {
-                throw new Error('Google Drive 로그인에 실패했습니다');
+                throw new Error('Google Drive API가 로드되지 않았습니다');
             }
 
         } catch (error) {
